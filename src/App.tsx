@@ -19,6 +19,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import logo from "./assets/logo.png";
 
 type Page = "home" | "about" | "peb" | "process" | "infrastructure" | "projects" | "industries" | "why" | "contact";
 
@@ -89,14 +90,7 @@ function go(page: Page) {
 function Logo({ inverse = false }: { inverse?: boolean }) {
   return (
     <div className="flex items-center gap-3">
-      <div className={`relative grid h-12 w-12 place-items-center rounded-[18px] border border-[#C9A14A]/30 ${inverse ? "bg-white/10" : "bg-white/70"} shadow-[0_14px_40px_rgba(201,161,74,0.16)] backdrop-blur-xl`}>
-        <div className="absolute inset-2 rounded-[12px] bg-[linear-gradient(135deg,#E2C675,#C9A14A)] opacity-18" />
-        <Factory className="relative h-6 w-6 text-[#C9A14A]" strokeWidth={1.35} />
-      </div>
-      <div className="leading-none">
-        <p className={`text-sm font-semibold tracking-[0.36em] ${inverse ? "text-white" : "text-[#1F1F1F]"}`}>SWASTIK</p>
-        <p className="mt-1 text-[10px] tracking-[0.48em] text-[#C9A14A]">ENGINEERING</p>
-      </div>
+      <img className="w-32" src={logo} alt="Logo" />
     </div>
   );
 }
