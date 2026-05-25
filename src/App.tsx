@@ -23,16 +23,6 @@ import logo from "./assets/logo.png";
 
 type Page = "home" | "about" | "peb" | "process" | "infrastructure" | "projects" | "industries" | "why" | "contact";
 
-const colors = {
-  gold: "#C9A14A",
-  gold2: "#E2C675",
-  ivory: "#FAF8F3",
-  warm: "#F5F3EE",
-  champagne: "#EFE7D6",
-  text: "#1F1F1F",
-  muted: "#5E5E5E",
-};
-
 const img = {
   hero: "https://images.pexels.com/photos/5846282/pexels-photo-5846282.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1400&w=2400",
   weld: "https://images.pexels.com/photos/177872/pexels-photo-177872.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1000&w=1800",
@@ -87,10 +77,10 @@ function go(page: Page) {
   window.location.hash = page === "home" ? "" : page;
 }
 
-function Logo({ inverse = false }: { inverse?: boolean }) {
+function Logo() {
   return (
-    <div className="flex items-center gap-3">
-      <img className="w-32" src={logo} alt="Logo" />
+    <div className="flex items-center">
+      <img className="h-10 w-auto object-contain" src={logo} alt="Swastik Engineering Logo" />
     </div>
   );
 }
@@ -114,28 +104,34 @@ function Header({ active }: { active: Page }) {
   };
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${solid ? "border-b border-[#C9A14A]/15 bg-white/82 shadow-[0_20px_80px_rgba(31,31,31,0.08)] backdrop-blur-2xl" : "bg-white/24 backdrop-blur-sm"}`}>
-      <div className="mx-auto flex h-24 max-w-[1680px] items-center justify-between px-6 md:px-10">
+    <header className={`fixed inset-x-0 z-50 transition-all duration-500 flex justify-center ${solid ? "top-3" : "top-6"}`}>
+      <div className={`flex h-16 w-[95%] max-w-[1200px] items-center justify-between rounded-full border border-[#C9A14A]/15 bg-white/95 px-6 backdrop-blur-2xl transition-all duration-500 ${solid ? "shadow-[0_20px_50px_rgba(31,31,31,0.1)] border-[#C9A14A]/30" : "shadow-xl"}`}>
         <button onClick={() => navigate("home")} aria-label="Swastik Engineering home"><Logo /></button>
         <nav className="hidden items-center gap-1 xl:flex">
           {nav.slice(0, 5).map((item) => (
-            <button key={item.page} onClick={() => navigate(item.page)} className={`px-4 py-3 text-[11px] uppercase tracking-[0.22em] transition hover:text-[#C9A14A] ${active === item.page ? "text-[#C9A14A]" : "text-[#1F1F1F]/66"}`}>{item.label}</button>
+            <button key={item.page} onClick={() => navigate(item.page)} className={`group relative whitespace-nowrap px-5 py-2.5 text-[12px] font-semibold tracking-wide transition-colors ${active === item.page ? "text-[#C9A14A]" : "text-[#5E5E5E] hover:text-[#1F1F1F]"}`}>
+              <span className="relative z-10">{item.label}</span>
+              <span className={`absolute inset-0 z-0 rounded-full transition-all duration-300 ${active === item.page ? "bg-[#C9A14A]/15 opacity-100 scale-100" : "bg-black/5 opacity-0 scale-90 group-hover:opacity-100 group-hover:scale-100"}`} />
+            </button>
           ))}
           <div className="relative" onMouseEnter={() => setMega(true)} onMouseLeave={() => setMega(false)}>
-            <button className="flex items-center gap-2 px-4 py-3 text-[11px] uppercase tracking-[0.22em] text-[#1F1F1F]/66 transition hover:text-[#C9A14A]">More <ChevronDown className="h-3 w-3" /></button>
+            <button className="group relative flex items-center gap-2 whitespace-nowrap px-5 py-2.5 text-[12px] font-semibold tracking-wide text-[#5E5E5E] transition-colors hover:text-[#1F1F1F]">
+              <span className="relative z-10 flex items-center gap-2">More <ChevronDown className="h-3 w-3" /></span>
+              <span className="absolute inset-0 z-0 rounded-full bg-black/5 opacity-0 scale-90 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100" />
+            </button>
             <AnimatePresence>
               {mega && (
-                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute right-0 top-full w-[760px] rounded-[32px] border border-[#C9A14A]/18 bg-white/88 p-8 shadow-[0_40px_120px_rgba(31,31,31,0.14)] backdrop-blur-2xl">
+                <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} className="absolute right-0 top-full mt-4 w-[760px] rounded-3xl border border-[#C9A14A]/15 bg-white/95 p-8 shadow-[0_20px_80px_rgba(31,31,31,0.08)] backdrop-blur-2xl">
                   <div className="grid grid-cols-[0.8fr_1.2fr] gap-8">
                     <div className="border-r border-[#C9A14A]/15 pr-8">
-                      <p className="text-xs uppercase tracking-[0.36em] text-[#C9A14A]">Navigation</p>
-                      <p className="mt-5 text-3xl font-semibold uppercase leading-tight tracking-[-0.04em] text-[#1F1F1F]">Luxury engineering presence across every division.</p>
+                      <p className="text-[10px]  tracking-wide text-[#C9A14A]">Navigation</p>
+                      <p className="mt-5 text-2xl font-medium leading-tight text-[#1F1F1F]">Advanced engineering presence across every division.</p>
                     </div>
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-2 gap-4">
                       {nav.slice(5).map((item) => (
-                        <button key={item.page} onClick={() => navigate(item.page)} className="group rounded-3xl border border-[#C9A14A]/12 bg-[#FAF8F3]/70 p-5 text-left transition hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(201,161,74,0.16)]">
-                          <span className="block text-sm font-semibold text-[#1F1F1F] group-hover:text-[#C9A14A]">{item.label}</span>
-                          <span className="mt-2 block text-xs leading-6 text-[#5E5E5E]">Open premium page experience.</span>
+                        <button key={item.page} onClick={() => navigate(item.page)} className="group rounded-2xl border border-[#C9A14A]/10 bg-[#FAF8F3]/50 p-4 text-left transition hover:border-[#C9A14A]/30 hover:bg-[#FAF8F3]">
+                          <span className="block text-sm font-sans text-[#1F1F1F] group-hover:text-[#C9A14A]">{item.label}</span>
+                          <span className="mt-1 block text-xs text-[#5E5E5E]">System overview.</span>
                         </button>
                       ))}
                     </div>
@@ -145,15 +141,15 @@ function Header({ active }: { active: Page }) {
             </AnimatePresence>
           </div>
         </nav>
-        <button onClick={() => navigate("contact")} className="hidden rounded-full border border-[#C9A14A]/25 bg-white/70 px-6 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-[#1F1F1F] shadow-[0_12px_40px_rgba(201,161,74,0.12)] transition hover:bg-[#C9A14A] hover:text-white xl:block">Inquiry</button>
-        <button onClick={() => setMobile(true)} className="grid h-12 w-12 place-items-center rounded-full border border-[#C9A14A]/20 bg-white/70 text-[#1F1F1F] xl:hidden" aria-label="Open menu"><Menu /></button>
+        <button onClick={() => navigate("contact")} className="hidden whitespace-nowrap rounded-full bg-gradient-to-r from-[#C9A14A] to-[#E2C675] px-7 py-2.5 text-[12px] font-bold tracking-wide text-white shadow-lg transition-all hover:scale-105 hover:shadow-[0_10px_25px_rgba(201,161,74,0.3)] xl:block">Inquiry</button>
+        <button onClick={() => setMobile(true)} className="grid h-10 w-10 place-items-center rounded-full border border-[#C9A14A]/15 bg-white/50 text-[#1F1F1F] xl:hidden" aria-label="Open menu"><Menu className="h-5 w-5" /></button>
       </div>
       <AnimatePresence>
         {mobile && (
-          <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }} className="fixed inset-0 z-[70] bg-[#FAF8F3] p-6 xl:hidden">
-            <div className="flex items-center justify-between"><Logo /><button onClick={() => setMobile(false)} className="grid h-12 w-12 place-items-center rounded-full border border-[#C9A14A]/20"><X /></button></div>
+          <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} className="fixed inset-0 z-[70] bg-[#FAF8F3] p-6 xl:hidden">
+            <div className="flex items-center justify-between"><Logo /><button onClick={() => setMobile(false)} className="grid h-12 w-12 place-items-center rounded-full border border-[#C9A14A]/15 bg-white text-[#1F1F1F]"><X /></button></div>
             <div className="mt-12 grid gap-3">
-              {nav.map((item, index) => <motion.button key={item.page} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.035 }} onClick={() => navigate(item.page)} className="rounded-3xl border border-[#C9A14A]/14 bg-white px-6 py-5 text-left text-xl uppercase tracking-[0.14em] text-[#1F1F1F] shadow-sm">{item.label}</motion.button>)}
+              {nav.map((item, index) => <motion.button key={item.page} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.03 }} onClick={() => navigate(item.page)} className="rounded-2xl border border-[#C9A14A]/15 bg-white px-6 py-5 text-left text-lg font-medium tracking-wide text-[#1F1F1F] active:bg-[#C9A14A]/10 active:text-[#C9A14A]">{item.label}</motion.button>)}
             </div>
           </motion.div>
         )}
@@ -164,7 +160,7 @@ function Header({ active }: { active: Page }) {
 
 function Reveal({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }} className={className}>
+    <motion.div initial={{ opacity: 0, y: 32 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }} className={className}>
       {children}
     </motion.div>
   );
@@ -175,24 +171,24 @@ function GoldLine() {
 }
 
 function Kicker({ children }: { children: React.ReactNode }) {
-  return <p className="text-xs font-semibold uppercase tracking-[0.42em] text-[#C9A14A]">{children}</p>;
+  return <p className="text-[11px] font-semibold  tracking-wide text-[#C9A14A]">{children}</p>;
 }
 
-function Button({ children, page, variant = "gold" }: { children: React.ReactNode; page?: Page; variant?: "gold" | "white" }) {
+function Button({ children, page, variant = "gold" }: { children: React.ReactNode; page?: Page; variant?: "gold" | "outline" }) {
   return (
-    <motion.button onClick={() => page && go(page)} whileHover={{ y: -4 }} whileTap={{ scale: 0.98 }} className={`group relative overflow-hidden rounded-full px-7 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition ${variant === "gold" ? "bg-[#C9A14A] text-white shadow-[0_22px_60px_rgba(201,161,74,0.26)]" : "border border-[#C9A14A]/35 bg-white/80 text-[#1F1F1F] shadow-[0_18px_55px_rgba(31,31,31,0.08)] backdrop-blur-xl"}`}>
-      <span className="relative z-10 flex items-center gap-3">{children}<ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span>
-      <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition duration-700 group-hover:translate-x-full" />
+    <motion.button onClick={() => page && go(page)} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className={`group relative overflow-hidden rounded-full px-7 py-4 text-xs font-semibold  tracking-wide transition-all ${variant === "gold" ? "bg-[#C9A14A] text-white shadow-[0_15px_30px_rgba(201,161,74,0.3)] hover:shadow-[0_20px_40px_rgba(201,161,74,0.4)]" : "border border-[#C9A14A]/30 bg-white/80 text-[#1F1F1F] backdrop-blur-xl hover:border-[#C9A14A]/60 hover:bg-[#C9A14A]/5"}`}>
+      <span className="relative z-10 flex items-center justify-center gap-3">{children}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
+      <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
     </motion.button>
   );
 }
 
 function SectionTitle({ kicker, title, text }: { kicker?: string; title: string; text?: string }) {
   return (
-    <Reveal className="mx-auto max-w-6xl text-center">
+    <Reveal className="mx-auto max-w-4xl text-center">
       {kicker && <Kicker>{kicker}</Kicker>}
-      <h2 className="mt-6 text-balance text-4xl font-semibold uppercase leading-[0.96] tracking-[-0.055em] text-[#1F1F1F] md:text-7xl">{title}</h2>
-      {text && <p className="mx-auto mt-7 max-w-3xl text-lg leading-8 text-[#5E5E5E]">{text}</p>}
+      <h2 className="mt-4 text-3xl font-medium leading-[1.1] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">{title}</h2>
+      {text && <p className="mx-auto mt-6 max-w-2xl text-lg text-[#5E5E5E]">{text}</p>}
       <div className="mt-8 flex justify-center"><GoldLine /></div>
     </Reveal>
   );
@@ -200,32 +196,79 @@ function SectionTitle({ kicker, title, text }: { kicker?: string; title: string;
 
 function AmbientGlow() {
   return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <motion.div className="absolute left-[10%] top-[18%] h-80 w-80 rounded-full bg-[#E2C675]/26 blur-3xl" animate={{ scale: [1, 1.18, 1], opacity: [0.22, 0.42, 0.22] }} transition={{ duration: 8, repeat: Infinity }} />
-      <motion.div className="absolute right-[6%] top-[45%] h-96 w-96 rounded-full bg-white/60 blur-3xl" animate={{ scale: [1.1, 0.95, 1.1], opacity: [0.25, 0.5, 0.25] }} transition={{ duration: 9, repeat: Infinity }} />
+    <div className="pointer-events-none absolute inset-0 overflow-hidden mix-blend-multiply">
+      <motion.div className="absolute left-[10%] top-[20%] h-[30rem] w-[30rem] rounded-full bg-[#E2C675]/15 blur-[120px]" animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+      <motion.div className="absolute right-[5%] top-[40%] h-[25rem] w-[25rem] rounded-full bg-[#C9A14A]/10 blur-[100px]" animate={{ scale: [1.2, 1, 1.2], opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }} />
     </div>
+  );
+}
+
+function GridPattern() {
+  return (
+    <div className="absolute inset-0 bg-[linear-gradient(to_right,#c9a14a1a_1px,transparent_1px),linear-gradient(to_bottom,#c9a14a1a_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
   );
 }
 
 function HomeHero() {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 900], [0, 130]);
-  const scale = useTransform(scrollY, [0, 900], [1, 1.08]);
+  const y = useTransform(scrollY, [0, 900], [0, 150]);
+  
+  const carouselImages = [img.hero, img.peb, img.shed, img.process];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [carouselImages.length]);
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-[#FAF8F3] pt-24">
-      <motion.img src={img.hero} alt="Luxury industrial facility" className="absolute inset-0 h-full w-full object-cover opacity-42" style={{ y, scale }} />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(250,248,243,0.98)_0%,rgba(250,248,243,0.9)_38%,rgba(250,248,243,0.52)_74%,rgba(250,248,243,0.34)_100%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_72%_34%,rgba(226,198,117,0.32),transparent_25rem),linear-gradient(180deg,transparent_64%,#FAF8F3_100%)]" />
-      <AmbientGlow />
-      <div className="pointer-events-none absolute bottom-8 right-6 hidden text-[15vw] font-semibold uppercase leading-none tracking-[-0.1em] text-white/34 mix-blend-soft-light lg:block">Swastik</div>
-      <div className="relative z-10 mx-auto flex min-h-[calc(100vh-6rem)] max-w-[1680px] items-center px-6 py-20 md:px-10">
-        <motion.div initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="max-w-[1120px]">
-          <Kicker>SWASTIK ENGINEERING</Kicker>
-          <h1 className="mt-8 text-balance text-6xl font-semibold uppercase leading-[0.86] tracking-[-0.08em] text-[#1F1F1F] md:text-8xl xl:text-[116px]">
-            Engineering Strength.<br />Delivering Precision.
+      {carouselImages.map((src, idx) => (
+        <motion.img 
+          key={src}
+          src={src} 
+          alt={`Industrial facility slide ${idx + 1}`} 
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ 
+            opacity: idx === currentIndex ? 1 : 0, 
+            scale: idx === currentIndex ? 1 : 1.05 
+          }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+          className="absolute inset-0 h-full w-full object-cover" 
+          style={{ y, zIndex: idx === currentIndex ? 1 : 0 }} 
+        />
+      ))}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1F1F1F]/90 via-[#1F1F1F]/50 to-transparent" />
+        <GridPattern />
+        <AmbientGlow />
+      </div>
+      <div className="pointer-events-none absolute bottom-12 right-12 hidden font-space text-[12vw] font-bold leading-none text-[#FAF8F3]/20 mix-blend-overlay lg:block z-10">SWASTIK</div>
+      
+      <div className="relative z-20 mx-auto flex min-h-[calc(100vh-6rem)] max-w-[1400px] items-center px-6 py-20 md:px-10">
+        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="max-w-[900px]">
+          <div className="inline-flex items-center gap-3 rounded-full border border-[#C9A14A]/30 bg-black/20 backdrop-blur-md px-5 py-2 mb-8">
+            <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E2C675] opacity-75"></span><span className="relative inline-flex h-2 w-2 rounded-full bg-[#C9A14A]"></span></span>
+            <span className="text-[11px] font-semibold tracking-wide text-[#E2C675]">Next Generation Engineering</span>
+          </div>
+          <h1 className="text-6xl font-semibold leading-[1.05] tracking-tight text-white sm:text-7xl md:text-8xl lg:text-[110px] drop-shadow-2xl">
+            Precision.<br /><span className="text-[#C9A14A]">Engineered.</span>
           </h1>
-          <p className="mt-8 max-w-2xl text-xl leading-9 text-[#5E5E5E]">Premium steel structures and process equipment manufacturing solutions trusted across industrial sectors.</p>
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row"><Button page="peb">Explore PEB Division</Button><Button page="process" variant="white">Explore Process Equipment</Button></div>
+          <p className="mt-8 max-w-xl text-xl font-light leading-relaxed text-white/90 drop-shadow-lg">Advanced steel structures and intelligent process equipment manufacturing for modern industrial sectors.</p>
+          <div className="mt-12 flex flex-col gap-4 sm:flex-row"><Button page="peb">Explore PEB Systems</Button><Button page="process" variant="gold">View Process Equipment</Button></div>
+          
+          <div className="mt-16 flex gap-3">
+            {carouselImages.map((_, idx) => (
+              <button 
+                key={idx} 
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIndex ? 'w-8 bg-[#C9A14A]' : 'w-2 bg-[#C9A14A]/30 hover:bg-[#C9A14A]/60'}`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
@@ -233,14 +276,15 @@ function HomeHero() {
 }
 
 function Metrics() {
-  const items = [["1000 MT", "Monthly Production Capacity"], ["40,000", "Sq Ft Manufacturing Facility"], ["Turnkey", "Design To Erection"], ["CNC", "Advanced Fabrication"], ["Global", "International Quality Standards"]];
+  const items = [["1000 MT", "Monthly Capacity"], ["40,000", "Sq Ft Facility"], ["Turnkey", "Design & Build"], ["CNC", "Fabrication"], ["Global", "Standards"]];
   return (
-    <section className="bg-white px-6 py-24 md:px-10">
-      <div className="mx-auto grid max-w-[1580px] gap-5 md:grid-cols-5">
+    <section className="relative z-20 py-24 px-6 md:px-10 bg-[#FAF8F3]">
+      <div className="mx-auto grid max-w-[1400px] gap-4 sm:grid-cols-2 md:grid-cols-5">
         {items.map(([value, label], i) => (
-          <Reveal key={label} delay={i * 0.04} className="rounded-[24px] border border-[#C9A14A]/18 bg-gradient-to-br from-white to-[#FAF8F3] p-8 shadow-[0_24px_70px_rgba(31,31,31,0.06)]">
-            <p className="text-4xl font-semibold uppercase tracking-[-0.06em] text-[#1F1F1F] md:text-5xl">{value}</p>
-            <p className="mt-5 text-xs font-semibold uppercase tracking-[0.24em] text-[#5E5E5E]">{label}</p>
+          <Reveal key={label} delay={i * 0.05} className="group relative overflow-hidden rounded-2xl border border-[#C9A14A]/15 bg-white/90 p-6 shadow-[0_15px_40px_rgba(31,31,31,0.05)] backdrop-blur-xl transition hover:border-[#C9A14A]/40">
+            <div className="absolute -inset-px rounded-2xl bg-gradient-to-b from-[#C9A14A]/5 to-transparent opacity-0 transition group-hover:opacity-100" />
+            <p className="text-3xl font-medium tracking-tight text-[#1F1F1F]">{value}</p>
+            <p className="mt-2 text-[10px] font-semibold  tracking-wide text-[#5E5E5E]">{label}</p>
           </Reveal>
         ))}
       </div>
@@ -250,19 +294,24 @@ function Metrics() {
 
 function Overview() {
   return (
-    <section className="bg-[#FAF8F3] px-6 py-32 md:px-10">
-      <div className="mx-auto grid max-w-[1580px] items-center gap-16 lg:grid-cols-[0.9fr_1.1fr]">
+    <section className="px-6 py-32 md:px-10">
+      <div className="mx-auto grid max-w-[1400px] items-center gap-16 lg:grid-cols-2">
         <Reveal>
-          <div className="relative overflow-hidden rounded-[40px] border border-[#C9A14A]/18 bg-white p-3 shadow-[0_36px_100px_rgba(31,31,31,0.09)]">
-            <img src={img.shed} alt="Manufacturing facility" className="h-[620px] w-full rounded-[30px] object-cover" />
+          <div className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-2 shadow-[0_20px_60px_rgba(31,31,31,0.06)]">
+            <div className="absolute inset-0 bg-gradient-to-tr from-[#C9A14A]/10 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+            <img src={img.shed} alt="Facility" className="h-[600px] w-full rounded-2xl object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
           </div>
         </Reveal>
         <Reveal>
-          <Kicker>Company Overview</Kicker>
-          <h2 className="mt-7 text-5xl font-semibold uppercase leading-[0.96] tracking-[-0.06em] text-[#1F1F1F] md:text-7xl">World-class engineering with architectural restraint.</h2>
-          <p className="mt-8 text-xl leading-10 text-[#5E5E5E]">A leading engineering and fabrication company delivering world-class PEB structures and industrial process equipment through advanced manufacturing, precision engineering, and turnkey execution.</p>
-          <div className="mt-10 grid gap-3 sm:grid-cols-2">
-            {customers.map((item) => <div key={item} className="flex items-center gap-3 rounded-full border border-[#C9A14A]/16 bg-white/70 px-5 py-3 text-sm font-medium text-[#1F1F1F] shadow-sm"><Check className="h-4 w-4 text-[#C9A14A]" />{item}</div>)}
+          <Kicker>System Architecture</Kicker>
+          <h2 className="mt-4 text-4xl font-medium leading-[1.1] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">Industrial execution<br />redefined.</h2>
+          <p className="mt-8 text-lg leading-relaxed text-[#5E5E5E]">A cutting-edge engineering and fabrication ecosystem delivering high-performance PEB structures and critical process equipment through data-driven manufacturing and precision assembly.</p>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2">
+            {customers.slice(0, 6).map((item) => (
+              <div key={item} className="flex items-center gap-3 rounded-xl border border-[#C9A14A]/15 bg-white px-4 py-3 text-sm text-[#1F1F1F] shadow-sm transition hover:bg-[#FAF8F3]">
+                <Check className="h-4 w-4 text-[#C9A14A]" />{item}
+              </div>
+            ))}
           </div>
         </Reveal>
       </div>
@@ -272,17 +321,24 @@ function Overview() {
 
 function Divisions() {
   return (
-    <section className="bg-[#EFE7D6] px-6 py-32 md:px-10">
-      <SectionTitle kicker="Business Divisions" title="A complete industrial portfolio, presented with precision." text="Pre-Engineered Buildings, heavy structures and process equipment brought together under one high-control manufacturing ecosystem." />
-      <div className="mx-auto mt-16 grid max-w-[1580px] gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <section className="relative overflow-hidden border-y border-[#C9A14A]/10 bg-[#EFE7D6]/50 px-6 py-32 md:px-10">
+      <AmbientGlow />
+      <SectionTitle kicker="Core Modules" title="Specialized engineering divisions." text="Advanced Pre-Engineered Buildings and high-integrity process equipment under one highly controlled manufacturing environment." />
+      <div className="mx-auto mt-20 grid max-w-[1400px] gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {divisions.map(([name, copy, photo, page], i) => (
-          <Reveal key={name} delay={i * 0.03}>
-            <motion.button onClick={() => go(page as Page)} whileHover={{ y: -8 }} className="group h-full overflow-hidden rounded-[24px] border border-[#C9A14A]/18 bg-white text-left shadow-[0_28px_90px_rgba(31,31,31,0.08)] transition hover:shadow-[0_36px_100px_rgba(201,161,74,0.22)]">
-              <div className="relative h-56 overflow-hidden"><img src={photo} alt={name} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" /><div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent" /></div>
-              <div className="p-7">
-                <p className="text-xs uppercase tracking-[0.28em] text-[#C9A14A]">0{i + 1}</p>
-                <h3 className="mt-5 text-2xl font-semibold uppercase tracking-[-0.04em] text-[#1F1F1F]">{name}</h3>
-                <p className="mt-4 text-sm leading-7 text-[#5E5E5E]">{copy}</p>
+          <Reveal key={name} delay={i * 0.05}>
+            <motion.button onClick={() => go(page as Page)} whileHover={{ y: -5 }} className="group flex h-full flex-col overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white text-left shadow-[0_15px_40px_rgba(31,31,31,0.05)] transition hover:border-[#C9A14A]/40 hover:shadow-[0_25px_60px_rgba(201,161,74,0.15)]">
+              <div className="relative h-48 overflow-hidden">
+                <div className="absolute inset-0 bg-[#C9A14A]/10 mix-blend-overlay transition group-hover:opacity-0" />
+                <img src={photo} alt={name} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-110 group-hover:opacity-100" />
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <p className="text-xs font-semibold  tracking-wide text-[#C9A14A]">MOD-{String(i + 1).padStart(2, "0")}</p>
+                <h3 className="mt-3 text-xl font-medium tracking-tight text-[#1F1F1F]">{name}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[#5E5E5E]">{copy}</p>
+                <div className="mt-auto pt-6 flex items-center text-xs font-medium text-[#C9A14A] opacity-0 transition group-hover:opacity-100">
+                  Explore Module <ArrowRight className="ml-2 h-3 w-3" />
+                </div>
               </div>
             </motion.button>
           </Reveal>
@@ -292,20 +348,22 @@ function Divisions() {
   );
 }
 
-function IconGrid({ title = "Trusted across critical industrial sectors.", kicker = "Industries We Serve", items = industries, bg = "white" }: { title?: string; kicker?: string; items?: string[]; bg?: "white" | "ivory" | "champagne" }) {
+function IconGrid({ title = "Deployed across critical sectors.", kicker = "Industries Served", items = industries }: { title?: string; kicker?: string; items?: string[] }) {
   const icons: LucideIcon[] = [Factory, ShieldCheck, Gauge, Zap, Waves, Globe2, Building2, Sparkles];
-  const bgClass = bg === "ivory" ? "bg-[#FAF8F3]" : bg === "champagne" ? "bg-[#EFE7D6]" : "bg-white";
   return (
-    <section className={`${bgClass} px-6 py-32 md:px-10`}>
+    <section className="px-6 py-32 md:px-10">
       <SectionTitle kicker={kicker} title={title} />
-      <div className="mx-auto mt-16 grid max-w-[1420px] gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto mt-20 grid max-w-[1400px] gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((item, index) => {
           const Icon = icons[index % icons.length];
           return (
-            <Reveal key={item} delay={index * 0.03}>
-              <motion.div whileHover={{ y: -7 }} className="group min-h-[230px] rounded-[24px] border border-[#C9A14A]/18 bg-white/78 p-8 shadow-[0_24px_80px_rgba(31,31,31,0.06)] backdrop-blur-xl hover:shadow-[0_34px_90px_rgba(201,161,74,0.18)]">
-                <Icon className="h-8 w-8 text-[#C9A14A]" strokeWidth={1.35} />
-                <p className="mt-20 text-2xl font-semibold tracking-[-0.04em] text-[#1F1F1F]">{item}</p>
+            <Reveal key={item} delay={index * 0.04}>
+              <motion.div whileHover={{ scale: 1.02 }} className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-8 shadow-[0_15px_40px_rgba(31,31,31,0.04)] transition hover:border-[#C9A14A]/40 hover:bg-[#FAF8F3]">
+                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#C9A14A]/5 blur-3xl transition group-hover:bg-[#C9A14A]/10" />
+                <div className="inline-flex rounded-2xl border border-[#C9A14A]/15 bg-[#FAF8F3] p-4 text-[#C9A14A] transition group-hover:border-[#C9A14A]/40 group-hover:bg-white">
+                  <Icon className="h-6 w-6" strokeWidth={1.5} />
+                </div>
+                <p className="mt-12 text-xl font-medium text-[#1F1F1F]">{item}</p>
               </motion.div>
             </Reveal>
           );
@@ -315,16 +373,30 @@ function IconGrid({ title = "Trusted across critical industrial sectors.", kicke
   );
 }
 
-function Timeline({ items, title, kicker, dark = false }: { items: string[]; title: string; kicker: string; dark?: boolean }) {
+function Timeline({ items, title, kicker }: { items: string[]; title: string; kicker: string }) {
   return (
-    <section className={`${dark ? "bg-[#1F1F1F]" : "bg-[#FAF8F3]"} px-6 py-32 md:px-10`}>
-      <div className="mx-auto max-w-[1320px]">
-        <Reveal className="max-w-5xl">
+    <section className="relative border-y border-[#C9A14A]/10 bg-[#EFE7D6]/30 px-6 py-32 md:px-10 overflow-hidden">
+      <GridPattern />
+      <div className="relative z-10 mx-auto max-w-[1000px]">
+        <Reveal className="text-center">
           <Kicker>{kicker}</Kicker>
-          <h2 className={`mt-6 text-5xl font-semibold uppercase leading-[0.96] tracking-[-0.06em] md:text-7xl ${dark ? "text-white" : "text-[#1F1F1F]"}`}>{title}</h2>
+          <h2 className="mt-4 text-4xl font-medium leading-[1.1] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">{title}</h2>
         </Reveal>
-        <div className="mt-16 grid gap-5">
-          {items.map((item, i) => <Reveal key={item} delay={i * 0.035} className={`rounded-[24px] border p-7 backdrop-blur-xl ${dark ? "border-[#E2C675]/18 bg-white/[0.06] text-white" : "border-[#C9A14A]/16 bg-white/75 text-[#1F1F1F] shadow-[0_20px_70px_rgba(31,31,31,0.06)]"}`}><div className="grid gap-6 md:grid-cols-[100px_1fr_0.8fr] md:items-center"><p className="text-xs uppercase tracking-[0.34em] text-[#C9A14A]">{String(i + 1).padStart(2, "0")}</p><h3 className="text-3xl font-semibold uppercase tracking-[-0.05em] md:text-5xl">{item}</h3><p className={`${dark ? "text-white/56" : "text-[#5E5E5E]"} text-sm leading-7`}>A controlled execution point improving reliability, speed, material quality and long-term industrial performance.</p></div></Reveal>)}
+        <div className="mt-20 relative">
+          <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#C9A14A]/50 via-[#C9A14A]/10 to-transparent md:left-1/2 md:-ml-px" />
+          <div className="grid gap-12">
+            {items.map((item, i) => (
+              <Reveal key={item} delay={i * 0.1} className={`relative flex items-center gap-8 ${i % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
+                <div className="hidden md:block md:w-1/2" />
+                <div className="absolute left-8 h-4 w-4 -translate-x-[7.5px] rounded-full border-4 border-[#FAF8F3] bg-[#C9A14A] shadow-[0_0_15px_rgba(201,161,74,0.4)] md:left-1/2" />
+                <div className={`ml-16 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
+                  <p className="text-[10px] font-semibold  tracking-wide text-[#C9A14A]">Phase 0{i + 1}</p>
+                  <h3 className="mt-2 text-2xl font-medium text-[#1F1F1F]">{item}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[#5E5E5E]">A controlled execution point improving reliability, speed, and long-term industrial performance.</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -332,34 +404,51 @@ function Timeline({ items, title, kicker, dark = false }: { items: string[]; tit
 }
 
 function ProjectsPreview() {
-  const projects = [["PEB Projects", img.peb], ["Industrial Buildings", img.shed], ["Heavy Structures", img.steel], ["Process Equipment", img.process]];
+  const projects = [["PEB Systems", img.peb], ["Industrial Hubs", img.shed], ["Heavy Steel", img.steel], ["Process Vessels", img.process]];
   return (
-    <section className="bg-white px-6 py-32 md:px-10">
-      <SectionTitle kicker="Featured Projects" title="Portfolio presentation with architectural calm." />
-      <div className="mx-auto mt-16 grid max-w-[1580px] gap-6 md:grid-cols-6">
-        {projects.map(([name, photo], index) => <Reveal key={name} className={index === 0 || index === 3 ? "md:col-span-4" : "md:col-span-2"}><motion.button onClick={() => go("projects")} whileHover={{ y: -8 }} className="group relative h-[520px] w-full overflow-hidden rounded-[30px] bg-white shadow-[0_30px_100px_rgba(31,31,31,0.1)]"><img src={photo} alt={name} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/68 via-transparent to-transparent" /><div className="absolute bottom-0 left-0 p-8 text-left"><p className="text-xs uppercase tracking-[0.32em] text-[#E2C675]">{name}</p><p className="mt-4 text-3xl font-semibold uppercase tracking-[-0.045em] text-white">Case-study grade delivery.</p></div></motion.button></Reveal>)}
+    <section className="px-6 py-32 md:px-10">
+      <SectionTitle kicker="Deployments" title="Proven structural execution." />
+      <div className="mx-auto mt-20 grid max-w-[1400px] gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {projects.map(([name, photo], index) => (
+          <Reveal key={name} delay={index * 0.1} className={index === 0 || index === 3 ? "lg:col-span-2" : "lg:col-span-1"}>
+            <motion.button onClick={() => go("projects")} className="group relative h-[400px] w-full overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]">
+              <img src={photo} alt={name} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/90 via-[#1F1F1F]/40 to-transparent" />
+              <div className="absolute inset-0 border-2 border-[#C9A14A]/0 transition duration-500 group-hover:border-[#C9A14A]/30 rounded-3xl" />
+              <div className="absolute bottom-0 left-0 p-8 text-left">
+                <p className="text-[10px] font-semibold  tracking-wide text-[#E2C675]">{name}</p>
+                <p className="mt-2 text-2xl font-medium text-white transition-transform group-hover:translate-x-2">View Specs →</p>
+              </div>
+            </motion.button>
+          </Reveal>
+        ))}
       </div>
     </section>
   );
 }
 
 function Home() {
-  return <><HomeHero /><Metrics /><Overview /><Divisions /><IconGrid bg="white" /><Timeline items={why} kicker="Why Choose Swastik" title="A refined execution model for industrial certainty." /><ProjectsPreview /></>;
+  return <><HomeHero /><Metrics /><Overview /><Divisions /><IconGrid /><Timeline items={why} kicker="Why Swastik" title="The execution advantage." /><ProjectsPreview /></>;
 }
 
 function PageHero({ kicker, title, text, photo }: { kicker: string; title: string; text: string; photo: string }) {
   const { scrollY } = useScroll();
-  const y = useTransform(scrollY, [0, 760], [0, 105]);
+  const y = useTransform(scrollY, [0, 760], [0, 100]);
   return (
-    <section className="relative min-h-[78vh] overflow-hidden bg-[#FAF8F3] pt-24">
-      <motion.img src={photo} alt={title} className="absolute inset-0 h-full w-full object-cover opacity-35" style={{ y }} />
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(250,248,243,0.98)_0%,rgba(250,248,243,0.88)_48%,rgba(250,248,243,0.46)_100%)]" />
-      <AmbientGlow />
-      <div className="relative z-10 mx-auto flex min-h-[78vh] max-w-[1680px] items-end px-6 pb-20 md:px-10">
-        <motion.div initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }} className="max-w-6xl">
-          <Kicker>{kicker}</Kicker>
-          <h1 className="mt-7 text-balance text-5xl font-semibold uppercase leading-[0.9] tracking-[-0.075em] text-[#1F1F1F] md:text-8xl">{title}</h1>
-          <p className="mt-8 max-w-3xl text-xl leading-9 text-[#5E5E5E]">{text}</p>
+    <section className="relative min-h-[60vh] overflow-hidden bg-[#FAF8F3] pt-24">
+      <motion.img src={photo} alt={title} className="absolute inset-0 h-full w-full object-cover" style={{ y }} />
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-r from-[#1F1F1F]/90 via-[#1F1F1F]/60 to-transparent" />
+        <GridPattern />
+      </div>
+      <div className="relative z-10 mx-auto flex min-h-[60vh] max-w-[1400px] items-center px-6 pb-12 pt-20 md:px-10">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-4xl">
+          <div className="inline-flex items-center gap-3 rounded-full border border-[#C9A14A]/30 bg-black/20 backdrop-blur-md px-5 py-2 mb-6">
+            <span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#E2C675] opacity-75"></span><span className="relative inline-flex h-2 w-2 rounded-full bg-[#C9A14A]"></span></span>
+            <span className="text-[11px] font-semibold tracking-wide text-[#E2C675]">{kicker}</span>
+          </div>
+          <h1 className="text-5xl font-semibold leading-[1.05] tracking-tight text-white md:text-7xl lg:text-[80px] drop-shadow-xl">{title}</h1>
+          <p className="mt-6 max-w-2xl text-xl font-light leading-relaxed text-white/90 drop-shadow-md">{text}</p>
         </motion.div>
       </div>
     </section>
@@ -367,50 +456,67 @@ function PageHero({ kicker, title, text, photo }: { kicker: string; title: strin
 }
 
 function About() {
-  return <><PageHero kicker="About" title="A premium engineering house built on trust and precision." text="Premium corporate narrative for SWASTIK ENGINEERING, a leading engineering and fabrication company." photo={img.weld} /><section className="bg-white px-6 py-32 md:px-10"><div className="mx-auto max-w-[1480px]"><Reveal><Kicker>Company Story</Kicker><h2 className="mt-7 max-w-6xl text-5xl font-semibold uppercase leading-[0.96] tracking-[-0.06em] text-[#1F1F1F] md:text-7xl">A leading engineering and fabrication company delivering world-class PEB structures and industrial process equipment through advanced manufacturing, precision engineering, and turnkey execution.</h2></Reveal><div className="mt-20 grid gap-6 md:grid-cols-2">{[["Vision", "To be recognized as a leading engineering and fabrication company delivering world-class PEB structures and industrial process equipment."], ["Mission", "To deliver premium steel structures and process equipment manufacturing solutions trusted across industrial sectors."]].map(([a, b]) => <Reveal key={a} className="rounded-[24px] border border-[#C9A14A]/18 bg-[#FAF8F3] p-10 shadow-[0_25px_80px_rgba(31,31,31,0.06)]"><Kicker>{a}</Kicker><p className="mt-8 text-3xl leading-tight tracking-[-0.04em] text-[#1F1F1F]">{b}</p></Reveal>)}</div></div></section><IconGrid items={values} kicker="Core Values" title="Integrity. Quality. Safety. Innovation. Sustainability." bg="ivory" /></>;
+  return <><PageHero kicker="About" title="Engineering precision at scale." text="A specialized engineering and fabrication ecosystem delivering high-performance PEB structures and critical process equipment." photo={img.weld} /><section className="px-6 py-32 md:px-10"><div className="mx-auto max-w-[1200px]"><Reveal><h2 className="text-3xl font-medium leading-[1.2] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">We engineer industrial structures that form the backbone of modern manufacturing and logistics operations.</h2></Reveal><div className="mt-20 grid gap-6 md:grid-cols-2">{[["Vision", "To set the benchmark for engineered steel building systems and industrial process equipment."], ["Mission", "Deliver uncompromising structural integrity and equipment reliability through advanced manufacturing and precise execution."]].map(([a, b]) => <Reveal key={a} className="rounded-3xl border border-[#C9A14A]/15 bg-white p-10 shadow-[0_15px_40px_rgba(31,31,31,0.04)]"><Kicker>{a}</Kicker><p className="mt-6 text-2xl leading-tight text-[#1F1F1F]">{b}</p></Reveal>)}</div></div></section><IconGrid items={values} kicker="Core Values" title="The foundation of our engineering." /></>;
 }
 
-function SpecList({ title, items, photo, bg = "white" }: { title: string; items: string[]; photo?: string; bg?: "white" | "ivory" | "champagne" }) {
-  const bgClass = bg === "ivory" ? "bg-[#FAF8F3]" : bg === "champagne" ? "bg-[#EFE7D6]" : "bg-white";
-  return <section className={`${bgClass} px-6 py-32 md:px-10`}><div className="mx-auto grid max-w-[1520px] gap-14 lg:grid-cols-[0.86fr_1.14fr]"><Reveal><Kicker>{title}</Kicker>{photo && <div className="mt-10 overflow-hidden rounded-[32px] border border-[#C9A14A]/18 bg-white p-3 shadow-[0_28px_90px_rgba(31,31,31,0.08)]"><img src={photo} alt={title} className="h-[560px] w-full rounded-[24px] object-cover" /></div>}</Reveal><div className="grid gap-4">{items.map((item, i) => <Reveal key={item} delay={i * 0.025} className="rounded-[24px] border border-[#C9A14A]/18 bg-white/82 p-7 shadow-[0_18px_60px_rgba(31,31,31,0.05)] backdrop-blur-xl"><div className="flex items-center justify-between gap-5"><p className="text-3xl font-semibold uppercase tracking-[-0.05em] text-[#1F1F1F] md:text-5xl">{item}</p><span className="text-xs font-semibold text-[#C9A14A]">{String(i + 1).padStart(2, "0")}</span></div></Reveal>)}</div></div></section>;
+function SpecList({ title, items, photo }: { title: string; items: string[]; photo?: string }) {
+  return (
+    <section className="px-6 py-32 md:px-10">
+      <div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-2 lg:items-center">
+        <Reveal>
+          <Kicker>{title}</Kicker>
+          <h2 className="mt-4 text-4xl font-medium text-[#1F1F1F]">Technical Parameters</h2>
+          {photo && <div className="mt-10 overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-2 shadow-sm"><img src={photo} alt={title} className="h-[500px] w-full rounded-2xl object-cover opacity-90" /></div>}
+        </Reveal>
+        <div className="grid gap-3">
+          {items.map((item, i) => (
+            <Reveal key={item} delay={i * 0.03} className="flex items-center justify-between rounded-2xl border border-[#C9A14A]/15 bg-white p-6 shadow-[0_10px_30px_rgba(31,31,31,0.03)] hover:border-[#C9A14A]/40 hover:bg-[#FAF8F3] transition">
+              <p className="text-xl font-medium text-[#1F1F1F]">{item}</p>
+              <span className="text-sm font-semibold text-[#C9A14A]/70">0{i + 1}</span>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function PEB() {
-  return <><PageHero kicker="PEB Division" title="Pre-engineered buildings with architectural discipline." text="Luxury engineering presentation for massive warehouse structures and complete PEB systems." photo={img.peb} /><section className="bg-white px-6 py-32 md:px-10"><SectionTitle kicker="What is PEB" title="Single-source engineered building systems for industrial scale." text="Pre-Engineered Buildings deliver single source responsibility, lower cost, fast construction, earthquake resistant performance, low maintenance, energy efficient operation, future expansion and durability." /></section><SpecList title="Applications" items={pebApplications} photo={img.shed} bg="ivory" /><SpecList title="PEB Benefits" items={pebBenefits} bg="champagne" /><SpecList title="Components" items={pebComponents} photo={img.steel} /></>;
+  return <><PageHero kicker="PEB Division" title="Intelligent Building Systems." text="High-span, load-bearing Pre-Engineered Buildings for massive logistics hubs, factories, and commercial infrastructure." photo={img.peb} /><section className="border-y border-[#C9A14A]/10 bg-[#EFE7D6]/30 px-6 py-24 md:px-10"><SectionTitle kicker="Architecture" title="Engineered for scale." text="PEB technology offers a superior strength-to-weight ratio, allowing for massive clear spans, rapid assembly, and extreme durability against seismic and environmental loads." /></section><SpecList title="Applications" items={pebApplications} photo={img.shed} /><SpecList title="System Advantages" items={pebBenefits} /><SpecList title="Structural Components" items={pebComponents} photo={img.steel} /></>;
 }
 
 function Process() {
-  return <><PageHero kicker="Process Equipment" title="Critical plant equipment with refined manufacturing control." text="Pressure vessels, storage tanks, reactors, heat exchangers, receiver tanks, distillation columns, chlorine vaporizers, lead-lined equipment and ISO containers." photo={img.process} /><section className="bg-white px-6 py-32 md:px-10"><SectionTitle kicker="Products" title="Industrial manufacturing showcase." /><div className="mx-auto mt-20 grid max-w-[1520px] gap-14">{processProducts.map((product, index) => <Reveal key={product}><div className={`grid gap-10 rounded-[32px] border border-[#C9A14A]/18 bg-[#FAF8F3] p-5 shadow-[0_28px_90px_rgba(31,31,31,0.07)] lg:grid-cols-[0.95fr_1.05fr] ${index % 2 ? "lg:[&>div:first-child]:order-2" : ""}`}><div className="h-[430px] overflow-hidden rounded-[24px]"><img src={[img.gauge, img.tanks, img.process][index % 3]} alt={product} className="h-full w-full object-cover transition duration-700 hover:scale-105" /></div><div className="flex flex-col justify-center p-4 md:p-8"><Kicker>{String(index + 1).padStart(2, "0")}</Kicker><h2 className="mt-6 text-5xl font-semibold uppercase tracking-[-0.06em] text-[#1F1F1F] md:text-7xl">{product}</h2><p className="mt-8 text-lg leading-9 text-[#5E5E5E]">Technical highlights include precision fabrication, advanced welding control, material quality assurance, dimensional accuracy and application-focused engineering for chemical, pharmaceutical, petrochemical and manufacturing industries.</p><p className="mt-5 text-xs uppercase tracking-[0.24em] text-[#8A7A55]">Application overview: process plant operations, industrial production, storage, transfer, separation, thermal exchange and specialized equipment duties.</p></div></div></Reveal>)}</div></section></>;
+  return <><PageHero kicker="Process Equipment" title="Critical Process Vessels." text="High-integrity pressure vessels, reactors, and heat exchangers engineered for demanding chemical and petrochemical environments." photo={img.process} /><section className="px-6 py-32 md:px-10"><SectionTitle kicker="Equipment Roster" title="Industrial process solutions." /><div className="mx-auto mt-20 grid max-w-[1400px] gap-12">{processProducts.map((product, index) => <Reveal key={product}><div className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.04)] lg:flex lg:h-[400px]"><div className={`lg:w-1/2 overflow-hidden ${index % 2 ? "lg:order-2" : ""}`}><img src={[img.gauge, img.tanks, img.process][index % 3]} alt={product} className="h-64 w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100 lg:h-full" /></div><div className="flex flex-col justify-center p-8 lg:w-1/2 lg:p-16"><Kicker>Model {String(index + 1).padStart(2, "0")}</Kicker><h2 className="mt-4 text-4xl font-medium text-[#1F1F1F]">{product}</h2><p className="mt-6 text-base text-[#5E5E5E]">Manufactured with stringent welding controls, x-ray testing, and precise dimensional tolerances to handle high-pressure and corrosive fluid dynamics.</p></div></div></Reveal>)}</div></section></>;
 }
 
 function Infrastructure() {
-  return <><PageHero kicker="Infrastructure" title="A 40,000 sq ft manufacturing ecosystem." text="Rolling machines, welding rotators, hydraulic testing, dish end forming, heat treatment, MIG welding, TIG welding, machining, grinding and painting facilities." photo={img.shed} /><SpecList title="Manufacturing Capability" items={infrastructure} photo={img.weld} bg="white" /><section className="grid bg-[#FAF8F3] gap-6 px-6 py-32 md:px-10 lg:grid-cols-3">{[img.weld, img.gauge, img.steel].map((photo, i) => <Reveal key={photo} className="relative h-[520px] overflow-hidden rounded-[30px] shadow-[0_30px_90px_rgba(31,31,31,0.1)]"><img src={photo} alt="Infrastructure" className="h-full w-full object-cover transition duration-700 hover:scale-110" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/58 to-transparent" /><p className="absolute bottom-8 left-8 text-xs uppercase tracking-[0.34em] text-[#E2C675]">Manufacturing Visual 0{i + 1}</p></Reveal>)}</section></>;
+  return <><PageHero kicker="Facility" title="Advanced Manufacturing Hub." text="A 40,000 sq ft high-tech manufacturing ecosystem equipped with heavy machinery for precision fabrication." photo={img.shed} /><SpecList title="Capabilities" items={infrastructure} photo={img.weld} /><section className="px-6 py-32 md:px-10"><div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-3">{[img.weld, img.gauge, img.steel].map((photo, i) => <Reveal key={photo} delay={i * 0.1} className="group relative h-[450px] overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]"><img src={photo} alt="Hardware" className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/80 to-transparent opacity-80" /><p className="absolute bottom-8 left-8 text-xs font-semibold  tracking-wide text-[#E2C675]">Hardware Layer {String(i + 1).padStart(2, "0")}</p></Reveal>)}</div></section></>;
 }
 
 function Projects() {
   const filters = ["PEB Projects", "Industrial Buildings", "Heavy Structures", "Process Equipment"];
   const [filter, setFilter] = useState(filters[0]);
-  return <><PageHero kicker="Projects" title="A portfolio experience built around industrial proof." text="Premium case study layout across PEB Projects, Industrial Buildings, Heavy Structures and Process Equipment." photo={img.steel} /><section className="bg-white px-6 py-32 md:px-10"><div className="mx-auto max-w-[1520px]"><div className="flex flex-wrap gap-3">{filters.map((item) => <button key={item} onClick={() => setFilter(item)} className={`rounded-full px-5 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition ${filter === item ? "bg-[#C9A14A] text-white shadow-[0_16px_50px_rgba(201,161,74,0.22)]" : "border border-[#C9A14A]/22 bg-[#FAF8F3] text-[#1F1F1F] hover:border-[#C9A14A]"}`}>{item}</button>)}</div><div className="mt-14 grid gap-6 md:grid-cols-6">{[img.peb, img.shed, img.steel, img.process, img.tanks, img.gauge].map((photo, index) => <Reveal key={`${filter}-${photo}`} className={index % 4 === 0 ? "md:col-span-4" : "md:col-span-2"}><motion.div whileHover={{ y: -8 }} className="group relative h-[460px] overflow-hidden rounded-[30px] shadow-[0_28px_90px_rgba(31,31,31,0.1)]"><img src={photo} alt={filter} className="h-full w-full object-cover transition duration-700 group-hover:scale-110" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/72 via-transparent to-transparent" /><div className="absolute bottom-0 p-8"><p className="text-xs uppercase tracking-[0.32em] text-[#E2C675]">{filter}</p><p className="mt-4 text-3xl font-semibold uppercase tracking-[-0.045em] text-white">Case Study {String(index + 1).padStart(2, "0")}</p></div></motion.div></Reveal>)}</div></div></section></>;
+  return <><PageHero kicker="Projects" title="Deployed Architecture." text="Examine our portfolio of high-stress structures and critical process equipment deployed globally." photo={img.steel} /><section className="px-6 py-32 md:px-10"><div className="mx-auto max-w-[1400px]"><div className="flex flex-wrap justify-center gap-3">{filters.map((item) => <button key={item} onClick={() => setFilter(item)} className={`rounded-full px-6 py-2.5 text-xs font-semibold  tracking-wide transition-all ${filter === item ? "bg-[#C9A14A] text-white shadow-[0_10px_20px_rgba(201,161,74,0.3)]" : "border border-[#C9A14A]/20 bg-white text-[#5E5E5E] hover:text-[#1F1F1F] hover:border-[#C9A14A]/40"}`}>{item}</button>)}</div><div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{[img.peb, img.shed, img.steel, img.process, img.tanks, img.gauge].map((photo, index) => <Reveal key={`${filter}-${photo}`} delay={index * 0.05}><motion.div whileHover={{ y: -5 }} className="group relative h-[400px] overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]"><img src={photo} alt={filter} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/90 via-[#1F1F1F]/30 to-transparent" /><div className="absolute bottom-0 p-8"><p className="text-[10px] font-semibold  tracking-wide text-[#E2C675]">{filter}</p><p className="mt-2 text-2xl font-medium text-white transition-transform group-hover:translate-x-2">Case 0{index + 1}</p></div></motion.div></Reveal>)}</div></div></section></>;
 }
 
 function Industries() {
-  return <><PageHero kicker="Industries Served" title="Engineered for sectors where reliability is non-negotiable." text="For EPC contractors, chemical industries, pharmaceutical industries, petrochemical plants, manufacturing industries, warehousing companies, infrastructure developers, government projects and export clients." photo={img.tanks} /><IconGrid bg="white" /><IconGrid items={customers} kicker="Target Customers" title="Industrial buyers and project owners served with turnkey confidence." bg="ivory" /></>;
+  return <><PageHero kicker="Sectors" title="Industrial Integrations." text="Delivering specialized infrastructure for sectors where operational reliability is mission-critical." photo={img.tanks} /><IconGrid /><IconGrid items={customers} kicker="Client Types" title="Engineering partners." /></>;
 }
 
 function WhyPage() {
-  return <><PageHero kicker="Why Swastik" title="One controlled workflow from requirement to completion." text="Identify requirement, solution proposal, quotation, design approval, fabrication, supply, erection and completion." photo={img.hero} /><Timeline items={workflow} kicker="Project Workflow" title="From need to operational handover." /><Timeline items={why} kicker="Why Choose Swastik" title="Execution advantages that compound project certainty." dark /></>;
+  return <><PageHero kicker="Why Us" title="The execution protocol." text="A rigorous, controlled workflow ensuring precise translation from engineering requirement to structural reality." photo={img.hero} /><Timeline items={workflow} kicker="Protocol" title="Lifecycle Management." /><section className="border-t border-[#C9A14A]/10" /><Timeline items={why} kicker="Advantages" title="System Benefits." /></>;
 }
 
 function Info({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text: string }) {
-  return <div className="flex gap-5 border-t border-[#C9A14A]/18 pt-6"><Icon className="h-6 w-6 shrink-0 text-[#C9A14A]" strokeWidth={1.35} /><div><p className="text-xs uppercase tracking-[0.3em] text-[#5E5E5E]">{title}</p><p className="mt-2 text-xl leading-8 text-[#1F1F1F]">{text}</p></div></div>;
+  return <div className="flex gap-4 rounded-2xl border border-[#C9A14A]/15 bg-white p-6 shadow-sm hover:border-[#C9A14A]/30 transition"><div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#C9A14A]/10 text-[#C9A14A]"><Icon className="h-5 w-5" /></div><div><p className="text-[10px]  tracking-[0.2em] text-[#5E5E5E]">{title}</p><p className="mt-1 text-lg text-[#1F1F1F]">{text}</p></div></div>;
 }
 
 function Contact() {
-  return <><PageHero kicker="Contact" title="Start a precision-engineered industrial project." text="Connect with Swastik Industries for PEB structures, structural fabrication and process equipment requirements." photo={img.hero} /><section className="bg-[#FAF8F3] px-6 py-32 md:px-10"><div className="mx-auto grid max-w-[1480px] gap-12 lg:grid-cols-[1fr_0.9fr]"><Reveal><form onSubmit={(e) => e.preventDefault()} className="grid gap-5 rounded-[32px] border border-[#C9A14A]/18 bg-white p-8 shadow-[0_30px_100px_rgba(31,31,31,0.08)] md:p-10">{["Name", "Company", "Email", "Phone"].map((field) => <label key={field}><span className="mb-3 block text-xs font-semibold uppercase tracking-[0.28em] text-[#C9A14A]">{field}</span><input type={field === "Email" ? "email" : field === "Phone" ? "tel" : "text"} className="w-full rounded-2xl border border-[#C9A14A]/18 bg-[#FAF8F3] px-5 py-5 text-[#1F1F1F] outline-none transition focus:border-[#C9A14A]" /></label>)}<label><span className="mb-3 block text-xs font-semibold uppercase tracking-[0.28em] text-[#C9A14A]">Requirement</span><textarea rows={7} className="w-full rounded-2xl border border-[#C9A14A]/18 bg-[#FAF8F3] px-5 py-5 text-[#1F1F1F] outline-none transition focus:border-[#C9A14A]" /></label><Button>Submit Inquiry</Button></form></Reveal><Reveal className="rounded-[32px] border border-[#C9A14A]/18 bg-white p-8 shadow-[0_30px_100px_rgba(31,31,31,0.08)] md:p-10"><Kicker>Contact Details</Kicker><div className="mt-10 space-y-8"><Info icon={MapPin} title="Address" text="Swastik Industries, 1601/1 GIDC, Ankleshwar - 393002" /><Info icon={Phone} title="Phone" text="9104567596 / 9157646407" /><Info icon={Mail} title="Email" text="Swastikind1601@gmail.com" /></div><div className="mt-12 h-[360px] overflow-hidden rounded-[24px] border border-[#C9A14A]/18"><iframe title="Swastik Industries Ankleshwar map" src="https://www.google.com/maps?q=GIDC%20Ankleshwar%20393002&output=embed" className="h-full w-full grayscale" loading="lazy" /></div></Reveal></div></section></>;
+  return <><PageHero kicker="Contact" title="Initialize Project." text="Establish communication for PEB, structural fabrication, or process equipment requirements." photo={img.hero} /><section className="px-6 py-32 md:px-10"><div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-2"><Reveal><form onSubmit={(e) => e.preventDefault()} className="grid gap-6 rounded-3xl border border-[#C9A14A]/15 bg-white p-8 shadow-[0_20px_60px_rgba(31,31,31,0.05)] md:p-12"><h2 className="text-3xl font-medium text-[#1F1F1F] mb-4">Send a transmission</h2>{["Name", "Company", "Email", "Phone"].map((field) => <label key={field}><span className="mb-2 block text-xs font-semibold  tracking-wide text-[#5E5E5E]">{field}</span><input type={field === "Email" ? "email" : field === "Phone" ? "tel" : "text"} className="w-full rounded-xl border border-[#C9A14A]/15 bg-[#FAF8F3] px-4 py-4 text-[#1F1F1F] placeholder:text-[#1F1F1F]/40 outline-none transition focus:border-[#C9A14A] focus:bg-white" placeholder={`Enter your ${field.toLowerCase()}`} /></label>)}<label><span className="mb-2 block text-xs font-semibold  tracking-wide text-[#5E5E5E]">Requirement Data</span><textarea rows={5} className="w-full rounded-xl border border-[#C9A14A]/15 bg-[#FAF8F3] px-4 py-4 text-[#1F1F1F] outline-none transition focus:border-[#C9A14A] focus:bg-white" placeholder="Specify dimensions, capacity, or general scope..." /></label><Button>Transmit Data</Button></form></Reveal><Reveal className="space-y-6"><Info icon={MapPin} title="HQ Coordinates" text="1601/1 GIDC, Ankleshwar - 393002" /><Info icon={Phone} title="Commlink" text="+91 9104567596 / +91 9157646407" /><Info icon={Mail} title="Data Channel" text="Swastikind1601@gmail.com" /><div className="mt-6 h-[400px] w-full overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-2 shadow-[0_15px_40px_rgba(31,31,31,0.05)]"><iframe title="HQ Location" src="https://www.google.com/maps?q=GIDC%20Ankleshwar%20393002&output=embed" className="h-full w-full rounded-2xl grayscale" loading="lazy" /></div></Reveal></div></section></>;
 }
 
 function Footer() {
-  return <footer className="bg-[#1F1F1F] px-6 py-16 text-white md:px-10"><div className="mx-auto grid max-w-[1580px] gap-12 lg:grid-cols-[1.2fr_0.8fr_0.9fr_1fr]"><div><Logo inverse /><p className="mt-8 max-w-md text-sm leading-7 text-white/58">A leading engineering and fabrication company delivering world-class PEB structures and industrial process equipment through advanced manufacturing, precision engineering, and turnkey execution.</p></div><div><Kicker>Quick Links</Kicker><div className="mt-6 grid gap-3">{nav.slice(0, 6).map((item) => <button key={item.page} onClick={() => go(item.page)} className="text-left text-sm text-white/58 transition hover:text-[#E2C675]">{item.label}</button>)}</div></div><div><Kicker>Business Divisions</Kicker><div className="mt-6 grid gap-3">{divisions.slice(0, 6).map(([name]) => <p key={name} className="text-sm text-white/58">{name}</p>)}</div></div><div><Kicker>Contact</Kicker><p className="mt-6 text-sm leading-7 text-white/62">Swastik Industries<br />1601/1 GIDC<br />Ankleshwar - 393002</p><p className="mt-5 text-sm text-white/62">9104567596 / 9157646407</p><p className="mt-3 text-sm text-white/62">Swastikind1601@gmail.com</p></div></div><div className="mx-auto mt-14 flex max-w-[1580px] flex-col justify-between gap-4 border-t border-[#E2C675]/16 pt-8 text-xs uppercase tracking-[0.24em] text-white/38 md:flex-row"><p>SWASTIK ENGINEERING</p><p>Engineering Strength. Delivering Precision.</p></div></footer>;
+  return <footer className="border-t border-[#C9A14A]/15 bg-[#1F1F1F] px-6 py-20 text-white/60 md:px-10"><div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]"><div><Logo /><p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">High-performance engineering and fabrication. Delivering PEB structures and critical process equipment through precision manufacturing.</p><div className="mt-8 flex gap-4"><a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#C9A14A] hover:text-white"><Globe2 className="h-4 w-4" /></a><a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#C9A14A] hover:text-white"><Mail className="h-4 w-4" /></a></div></div><div><p className="text-sm font-semibold text-white">Index</p><div className="mt-6 grid gap-3">{nav.slice(0, 6).map((item) => <button key={item.page} onClick={() => go(item.page)} className="w-fit text-sm transition hover:text-[#E2C675]">{item.label}</button>)}</div></div><div><p className="text-sm font-semibold text-white">Modules</p><div className="mt-6 grid gap-3">{divisions.slice(0, 5).map(([name]) => <p key={name} className="text-sm cursor-default hover:text-white/80 transition">{name}</p>)}</div></div><div><p className="text-sm font-semibold text-white">Comm Node</p><p className="mt-6 text-sm">1601/1 GIDC<br />Ankleshwar - 393002</p><p className="mt-4 text-sm text-[#E2C675]">9104567596</p><p className="mt-2 text-sm text-[#E2C675]">Swastikind1601@gmail.com</p></div></div><div className="mx-auto mt-20 flex max-w-[1400px] flex-col justify-between gap-4 border-t border-white/10 pt-8 text-[10px] font-semibold  tracking-wide text-white/40 md:flex-row"><p>SWASTIK ENGINEERING © {new Date().getFullYear()}</p><p>System Architecture Active</p></div></footer>;
 }
 
 export default function App() {
@@ -435,10 +541,10 @@ export default function App() {
   }), []);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F3] text-[#1F1F1F] selection:bg-[#C9A14A] selection:text-white" style={{ ["--gold" as string]: colors.gold, ["--ivory" as string]: colors.ivory, ["--warm" as string]: colors.warm, ["--champagne" as string]: colors.champagne, ["--text" as string]: colors.text, ["--muted" as string]: colors.muted, ["--gold2" as string]: colors.gold2 }}>
+    <div className="min-h-screen bg-[#FAF8F3] text-[#1F1F1F] selection:bg-[#C9A14A]/30 selection:text-[#1F1F1F]">
       <Header active={page} />
       <AnimatePresence mode="wait">
-        <motion.main key={page} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }} transition={{ duration: 0.5 }}>{pages[page]}</motion.main>
+        <motion.main key={page} initial={{ opacity: 0, y: 15, filter: "blur(10px)" }} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -15, filter: "blur(10px)" }} transition={{ duration: 0.4 }}>{pages[page]}</motion.main>
       </AnimatePresence>
       <Footer />
     </div>
