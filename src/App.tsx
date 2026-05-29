@@ -8,8 +8,11 @@ import {
   Factory,
   Gauge,
   Globe2,
+  Headphones,
+  Layers,
   Mail,
   MapPin,
+  Maximize,
   Menu,
   Phone,
   ShieldCheck,
@@ -21,7 +24,7 @@ import {
 import type { LucideIcon } from "lucide-react";
 import logo from "./assets/logo.png";
 
-type Page = "home" | "about" | "peb" | "process" | "infrastructure" | "projects" | "industries" | "why" | "contact";
+type Page = "home" | "about" | "peb" | "process" | "projects" | "why" | "contact";
 
 const img = {
   hero: "https://images.pexels.com/photos/5846282/pexels-photo-5846282.jpeg?auto=compress&cs=tinysrgb&fit=crop&h=1400&w=2400",
@@ -39,9 +42,7 @@ const nav: { page: Page; label: string }[] = [
   { page: "about", label: "About" },
   { page: "peb", label: "PEB Division" },
   { page: "process", label: "Process Equipment" },
-  { page: "infrastructure", label: "Infrastructure" },
   { page: "projects", label: "Projects" },
-  { page: "industries", label: "Industries Served" },
   { page: "why", label: "Why Swastik" },
   { page: "contact", label: "Contact" },
 ];
@@ -79,8 +80,8 @@ function go(page: Page) {
 
 function Logo() {
   return (
-    <div className="flex items-center">
-      <img className="h-10 w-auto object-contain" src={logo} alt="Swastik Engineering Logo" />
+    <div className="flex shrink-0 items-center">
+      <img className="h-7 sm:h-8 md:h-10 w-auto object-contain" src={logo} alt="Swastik Engineering Logo" />
     </div>
   );
 }
@@ -146,9 +147,9 @@ function Header({ active }: { active: Page }) {
       </div>
       <AnimatePresence>
         {mobile && (
-          <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} className="fixed inset-0 z-[70] bg-[#FAF8F3] p-6 xl:hidden">
-            <div className="flex items-center justify-between"><Logo /><button onClick={() => setMobile(false)} className="grid h-12 w-12 place-items-center rounded-full border border-[#C9A14A]/15 bg-white text-[#1F1F1F]"><X /></button></div>
-            <div className="mt-12 grid gap-3">
+          <motion.div initial={{ x: "100%" }} animate={{ x: 0 }} exit={{ x: "100%" }} transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }} className="fixed inset-0 z-[70] overflow-y-auto bg-[#FAF8F3] p-6 xl:hidden">
+            <div className="flex items-center justify-between"><Logo /><button onClick={() => setMobile(false)} className="grid h-12 w-12 shrink-0 place-items-center rounded-full border border-[#C9A14A]/15 bg-white text-[#1F1F1F]"><X /></button></div>
+            <div className="mt-12 grid gap-3 pb-12">
               {nav.map((item, index) => <motion.button key={item.page} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.03 }} onClick={() => navigate(item.page)} className="rounded-2xl border border-[#C9A14A]/15 bg-white px-6 py-5 text-left text-lg font-medium tracking-wide text-[#1F1F1F] active:bg-[#C9A14A]/10 active:text-[#C9A14A]">{item.label}</motion.button>)}
             </div>
           </motion.div>
@@ -276,7 +277,7 @@ function HomeHero() {
 }
 
 function Metrics() {
-  const items = [["1000 MT", "Monthly Capacity"], ["40,000", "Sq Ft Facility"], ["Turnkey", "Design & Build"], ["CNC", "Fabrication"], ["Global", "Standards"]];
+  const items = [["In-House", "Fabrication"], ["Plastic", "Painting"], ["CNC", "Machinery"], ["1000 MT", "Monthly Capacity"], ["40,000", "Sq Ft Facility"]];
   return (
     <section className="relative z-20 py-24 px-6 md:px-10 bg-[#FAF8F3]">
       <div className="mx-auto grid max-w-[1400px] gap-4 sm:grid-cols-2 md:grid-cols-5">
@@ -403,6 +404,91 @@ function Timeline({ items, title, kicker }: { items: string[]; title: string; ki
   );
 }
 
+function PEBBenefits() {
+  const benefits = [
+    { title: "Single Source Responsibility", text: "As the complete building package is supplied by a single vendor, compatibility of all building components and accessories is assured. This is one of the major benefits of pre-engineered building systems." },
+    { title: "Lower Cost", text: "The use of tapered built-up structural members (Columns & Rafters) and Z-shaped secondary members (Purlin & Girt) allows overlapping. Foundation is almost 30% lighter." },
+    { title: "Architectural Versatility", text: "Aesthetic features such as fascia, parapets, and curved eaves greatly improve the appearance of the building. Flashing and trims are available in different shapes and colors. A wide range of wall and roof sheeting." },
+    { title: "Optimal & Aesthetic Designs", text: "Steel has a high strength/weight ratio. Thus, the dead weight of steel structures is relatively small. Steel can aid in innovative designs compared to concrete." },
+    { title: "Future Expansion", text: "Steel buildings can be easily expanded in length by adding additional bays. Also, expansion in width and height is possible by pre-designing for future expansion." },
+    { title: "Enhanced Speed of Construction", text: "Factory-controlled prefabrication combined with standardized connections results in significantly faster construction times compared to conventional methods." },
+    { title: "Quality Control", text: "As buildings are manufactured completely in the factory under controlled conditions, the quality is assured." },
+    { title: "Foundation", text: "Pre-engineered buildings are about 30% lighter than conventional steel structures. Hence, the foundations are of simple design, easy to construct, and lighter in weight." },
+    { title: "Low Maintenance", text: "Buildings are supplied with high-quality paint systems for cladding and steel to suit ambient conditions at the site, which results in long durability and low maintenance costs." },
+    { title: "Erection", text: "Steel structure is faster to erect compared to RCC frames. Since all the connections of the different components are standard, the erection time is faster." },
+    { title: "Earthquake Resistant", text: "Properly designed steel structures can have high ductility, which is an important characteristic for resisting shock loading, such as blasts or earthquakes." },
+    { title: "Functional Versatility", text: "Large clear spans (up to 100m). Long bay spacing (up to 13m without jack beams). Modular construction." },
+    { title: "Durability", text: "In contrast to reinforced concrete, steel properties do not change considerably with time." },
+    { title: "Energy Efficient Systems", text: "Buildings can be supplied with polyurethane insulated panels or fiberglass blanket insulation to achieve required 'U' values." },
+    { title: "Early Occupancy", text: "Reduced project time results in early occupancy, which provides an economic advantage to the clients." }
+  ];
+
+  return (
+    <section className="bg-[#FAF8F3] px-6 py-32 md:px-10 border-t border-[#C9A14A]/10">
+      <div className="mx-auto max-w-[1400px]">
+        <Reveal className="text-center">
+          <Kicker>Advantages</Kicker>
+          <h2 className="mt-4 text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl">System Benefits</h2>
+          <div className="mt-8 flex justify-center"><GoldLine /></div>
+        </Reveal>
+        
+        <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {benefits.map((benefit, i) => (
+            <Reveal key={benefit.title} delay={(i % 4) * 0.05} className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-8 shadow-[0_15px_40px_rgba(31,31,31,0.04)] transition hover:border-[#C9A14A]/40 hover:shadow-[0_20px_50px_rgba(201,161,74,0.1)] hover:-translate-y-1">
+              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#C9A14A]/5 blur-3xl transition group-hover:bg-[#C9A14A]/15" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FAF8F3] text-[#C9A14A] border border-[#C9A14A]/10 group-hover:bg-[#C9A14A] group-hover:text-white transition-colors duration-500">
+                <Building2 className="h-5 w-5" />
+              </div>
+              <h3 className="mt-6 text-xl font-medium text-[#1F1F1F] relative z-10">{benefit.title}</h3>
+              <p className="mt-4 text-sm leading-relaxed text-[#5E5E5E] relative z-10">{benefit.text}</p>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProjectWorkflow() {
+  const steps = [
+    { title: "Identifying Customers Need", text: "Develop possible solutions & select promising one." },
+    { title: "Providing Quotation with Promising Solutions", text: "We offer the best proposal with promising solutions to all kinds of PEB structures." },
+    { title: "Finalizing Deal and Receiving Purchase Order", text: "Our experienced Design, Fabrication & Erection teams start planning to complete the project in optimum time." },
+    { title: "Getting Approval of GA Drawing from Customers", text: "After approval of the GA drawing, detailed design drawings and erection drawings will be prepared." },
+    { title: "Fabrication and Supply of Structural Material", text: "All fabrication work is done by CNC. Cutting, welding, forming systems, etc." },
+    { title: "Erection Process", text: "Assembling and erecting the structure safely at the site." },
+    { title: "Work Completion Certificate from Customer", text: "A project completion certificate is issued when a project is completed in its entirety with full satisfaction from the customer." }
+  ];
+
+  return (
+    <section className="relative border-y border-[#C9A14A]/10 bg-[#EFE7D6]/30 px-6 py-32 md:px-10 overflow-hidden">
+      <GridPattern />
+      <div className="relative z-10 mx-auto max-w-[1000px]">
+        <Reveal className="text-center">
+          <Kicker>Process</Kicker>
+          <h2 className="mt-4 text-4xl font-medium leading-[1.1] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">Project Work Flow</h2>
+        </Reveal>
+        <div className="mt-20 relative">
+          <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-[#C9A14A]/50 via-[#C9A14A]/10 to-transparent md:left-1/2 md:-ml-px" />
+          <div className="grid gap-12">
+            {steps.map((step, i) => (
+              <Reveal key={step.title} delay={i * 0.1} className={`relative flex items-center gap-8 ${i % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
+                <div className="hidden md:block md:w-1/2" />
+                <div className="absolute left-8 h-4 w-4 -translate-x-[7.5px] rounded-full border-4 border-[#FAF8F3] bg-[#C9A14A] shadow-[0_0_15px_rgba(201,161,74,0.4)] md:left-1/2" />
+                <div className={`ml-16 md:ml-0 md:w-1/2 ${i % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
+                  <p className="text-[10px] font-semibold tracking-wide text-[#C9A14A]">Phase 0{i + 1}</p>
+                  <h3 className="mt-2 text-2xl font-medium text-[#1F1F1F]">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[#5E5E5E]">{step.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function ProjectsPreview() {
   const projects = [["PEB Systems", img.peb], ["Industrial Hubs", img.shed], ["Heavy Steel", img.steel], ["Process Vessels", img.process]];
   return (
@@ -456,7 +542,57 @@ function PageHero({ kicker, title, text, photo }: { kicker: string; title: strin
 }
 
 function About() {
-  return <><PageHero kicker="About" title="Engineering precision at scale." text="A specialized engineering and fabrication ecosystem delivering high-performance PEB structures and critical process equipment." photo={img.weld} /><section className="px-6 py-32 md:px-10"><div className="mx-auto max-w-[1200px]"><Reveal><h2 className="text-3xl font-medium leading-[1.2] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">We engineer industrial structures that form the backbone of modern manufacturing and logistics operations.</h2></Reveal><div className="mt-20 grid gap-6 md:grid-cols-2">{[["Vision", "To set the benchmark for engineered steel building systems and industrial process equipment."], ["Mission", "Deliver uncompromising structural integrity and equipment reliability through advanced manufacturing and precise execution."]].map(([a, b]) => <Reveal key={a} className="rounded-3xl border border-[#C9A14A]/15 bg-white p-10 shadow-[0_15px_40px_rgba(31,31,31,0.04)]"><Kicker>{a}</Kicker><p className="mt-6 text-2xl leading-tight text-[#1F1F1F]">{b}</p></Reveal>)}</div></div></section><IconGrid items={values} kicker="Core Values" title="The foundation of our engineering." /></>;
+  return (
+    <>
+      <PageHero kicker="About" title="Engineering precision at scale." text="A specialized engineering and fabrication ecosystem delivering high-performance PEB structures and critical process equipment." photo={img.weld} />
+      <section className="px-6 py-32 md:px-10">
+        <div className="mx-auto max-w-[1200px]">
+          <Reveal>
+            <h2 className="text-3xl font-medium leading-[1.2] tracking-tight text-[#1F1F1F] md:text-5xl lg:text-6xl">
+              We engineer industrial structures that form the backbone of modern manufacturing and logistics operations.
+            </h2>
+          </Reveal>
+          <div className="mt-20 grid gap-6 md:grid-cols-2">
+            {[
+              ["Vision", "To be recognized globally as a trusted partner in manufacturing world-class process equipment and to set new benchmarks in quality and innovation."], 
+              ["Mission", "To deliver safe, efficient, and cost-effective engineering solutions. To provide customized equipment meeting exact client requirements. To continuously upgrade our technology and processes."]
+            ].map(([a, b]) => (
+              <Reveal key={a} className="rounded-3xl border border-[#C9A14A]/15 bg-white p-10 shadow-[0_15px_40px_rgba(31,31,31,0.04)]">
+                <Kicker>{a}</Kicker>
+                <p className="mt-6 text-2xl leading-relaxed text-[#1F1F1F]">{b}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      <section className="bg-[#FAF8F3] px-6 py-32 md:px-10 border-t border-[#C9A14A]/10">
+        <div className="mx-auto max-w-[1400px]">
+          <Reveal className="text-center">
+            <Kicker>Core Values</Kicker>
+            <h2 className="mt-4 text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl">The foundation of our engineering.</h2>
+            <div className="mt-8 flex justify-center"><GoldLine /></div>
+          </Reveal>
+          
+          <div className="mt-20 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+            {[
+              { title: "Integrity", text: "Transparent business practices." },
+              { title: "Quality", text: "Zero-compromise approach." },
+              { title: "Safety", text: "Highest priority in design & operation." },
+              { title: "Innovation", text: "Continuous improvement & R&D." },
+              { title: "Sustainability", text: "Eco-friendly and responsible manufacturing." }
+            ].map((value, i) => (
+              <Reveal key={value.title} delay={i * 0.1} className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-8 shadow-[0_15px_40px_rgba(31,31,31,0.04)] transition hover:border-[#C9A14A]/40 hover:shadow-[0_20px_50px_rgba(201,161,74,0.1)] hover:-translate-y-1">
+                <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-[#C9A14A]/5 blur-3xl transition group-hover:bg-[#C9A14A]/15" />
+                <h3 className="text-2xl font-medium text-[#1F1F1F] relative z-10">{value.title}</h3>
+                <p className="mt-4 text-sm leading-relaxed text-[#5E5E5E] relative z-10">{value.text}</p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
 }
 
 function SpecList({ title, items, photo }: { title: string; items: string[]; photo?: string }) {
@@ -482,15 +618,136 @@ function SpecList({ title, items, photo }: { title: string; items: string[]; pho
 }
 
 function PEB() {
-  return <><PageHero kicker="PEB Division" title="Intelligent Building Systems." text="High-span, load-bearing Pre-Engineered Buildings for massive logistics hubs, factories, and commercial infrastructure." photo={img.peb} /><section className="border-y border-[#C9A14A]/10 bg-[#EFE7D6]/30 px-6 py-24 md:px-10"><SectionTitle kicker="Architecture" title="Engineered for scale." text="PEB technology offers a superior strength-to-weight ratio, allowing for massive clear spans, rapid assembly, and extreme durability against seismic and environmental loads." /></section><SpecList title="Applications" items={pebApplications} photo={img.shed} /><SpecList title="System Advantages" items={pebBenefits} /><SpecList title="Structural Components" items={pebComponents} photo={img.steel} /></>;
+  return (
+    <>
+      <PageHero kicker="PEB Division" title="Intelligent Building Systems." text="High-span, load-bearing Pre-Engineered Buildings for massive logistics hubs, factories, and commercial infrastructure." photo={img.peb} />
+      <section className="px-6 py-32 md:px-10">
+        <div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-2 lg:items-center">
+          <Reveal>
+            <Kicker>Overview</Kicker>
+            <h2 className="mt-4 text-3xl font-medium leading-[1.4] tracking-tight text-[#1F1F1F] md:text-4xl">
+              We specialize in providing complete solutions including consulting, design, fabrication and erection of high-quality pre-engineered steel building and steel structure products with the help of latest technology and manufacturing facilities.
+            </h2>
+            <div className="mt-8 space-y-6 text-lg leading-relaxed text-[#5E5E5E]">
+              <p>
+                We provide a reliable approach for fast turnkey construction primarily for non-residential buildings such as manufacturing plants, heavy industry, warehouses, high-rise building, shopping mall, exhibition centers, commercial, sports centers, offices, transportation, and aircraft hangars.
+              </p>
+              <p>
+                <strong className="font-semibold text-[#1F1F1F]">Plant Facility & Capacity:</strong> Production line of SWASTIK is totally closed with highly automatic and advanced facilities, which provides superior quality and high precision of products, having 1,000 MT production capacity per month.
+              </p>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white p-2 shadow-[0_20px_60px_rgba(31,31,31,0.06)]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#C9A14A]/10 to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+              <img src={img.shed} alt="PEB Facility" className="h-[600px] w-full rounded-2xl object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-white px-6 py-32 md:px-10 border-y border-[#C9A14A]/5">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-multiply grayscale">
+          <img src={img.steel} alt="Background" className="h-full w-full object-cover" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-[1400px]">
+          <Reveal className="mb-16">
+            <h2 className="text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl uppercase">What is PEB?</h2>
+            <div className="mt-6 h-[2px] w-24 bg-[#C9A14A]" />
+          </Reveal>
+          
+          <div className="grid gap-8 lg:grid-cols-3">
+            {[
+              "Pre-engineered building is built over three members. Primary members (columns, rafters, bracing, Canopies), Secondary members (Z or C purlins, girts, eave struts), Galvalume sheeting (Roof and wall sheeting) connected to each other.",
+              "The entire primary members and secondary members are designed and fully fabricated including cut-to-length, punching, drilling, welding and prefabricated in the factory before shipping to the site for erection.",
+              "At the site, all components are assembled and joined via nut & bolt connections; thereby reducing the costs and assembly times."
+            ].map((text, i) => (
+              <Reveal key={i} delay={i * 0.1} className="group relative rounded-3xl border border-[#C9A14A]/15 bg-[#FAF8F3] p-10 shadow-sm transition hover:border-[#C9A14A]/40 hover:shadow-md">
+                <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-[#C9A14A]/5 blur-2xl transition group-hover:bg-[#C9A14A]/10" />
+                <span className="mb-6 inline-block text-5xl font-light text-[#C9A14A]/30 transition group-hover:text-[#C9A14A]/60">0{i + 1}</span>
+                <p className="relative z-10 text-lg leading-relaxed text-[#5E5E5E]">
+                  {text}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-[#C9A14A]/10 bg-[#EFE7D6]/30 px-6 py-24 md:px-10">
+        <SectionTitle kicker="Architecture" title="Engineered for scale." text="PEB technology offers a superior strength-to-weight ratio, allowing for massive clear spans, rapid assembly, and extreme durability against seismic and environmental loads." />
+      </section>
+      <SpecList title="Applications" items={pebApplications} photo={img.shed} />
+      <PEBBenefits />
+      <SpecList title="Structural Components" items={pebComponents} photo={img.steel} />
+      <ProjectWorkflow />
+    </>
+  );
 }
 
 function Process() {
-  return <><PageHero kicker="Process Equipment" title="Critical Process Vessels." text="High-integrity pressure vessels, reactors, and heat exchangers engineered for demanding chemical and petrochemical environments." photo={img.process} /><section className="px-6 py-32 md:px-10"><SectionTitle kicker="Equipment Roster" title="Industrial process solutions." /><div className="mx-auto mt-20 grid max-w-[1400px] gap-12">{processProducts.map((product, index) => <Reveal key={product}><div className="group relative overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.04)] lg:flex lg:h-[400px]"><div className={`lg:w-1/2 overflow-hidden ${index % 2 ? "lg:order-2" : ""}`}><img src={[img.gauge, img.tanks, img.process][index % 3]} alt={product} className="h-64 w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100 lg:h-full" /></div><div className="flex flex-col justify-center p-8 lg:w-1/2 lg:p-16"><Kicker>Model {String(index + 1).padStart(2, "0")}</Kicker><h2 className="mt-4 text-4xl font-medium text-[#1F1F1F]">{product}</h2><p className="mt-6 text-base text-[#5E5E5E]">Manufactured with stringent welding controls, x-ray testing, and precise dimensional tolerances to handle high-pressure and corrosive fluid dynamics.</p></div></div></Reveal>)}</div></section></>;
-}
+  return (
+    <>
+      <PageHero kicker="Process Equipment" title="Critical Process Vessels." text="High-integrity pressure vessels, reactors, and heat exchangers engineered for demanding chemical and petrochemical environments." photo={img.process} />
+      
+      <section className="bg-[#EFE7D6]/30 px-6 py-32 md:px-10 border-y border-[#C9A14A]/10">
+        <div className="mx-auto max-w-[1200px]">
+          <Reveal className="text-center">
+            <Kicker>Infrastructure</Kicker>
+            <h2 className="mt-4 text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl uppercase">Our Infrastructure</h2>
+            <div className="mt-8 flex justify-center"><GoldLine /></div>
+            <p className="mt-8 mx-auto max-w-3xl text-xl leading-relaxed text-[#5E5E5E]">
+              Our manufacturing facility is spread across 40,000 sq. ft., equipped with advanced machinery to handle complex fabrication and large-scale projects.
+            </p>
+          </Reveal>
+          <div className="mt-16 bg-white rounded-3xl p-8 md:p-12 shadow-[0_15px_40px_rgba(31,31,31,0.04)] border border-[#C9A14A]/15">
+            <h3 className="text-2xl font-medium text-[#1F1F1F] mb-8">Key Infrastructure Highlights:</h3>
+            <div className="grid gap-4 md:grid-cols-2">
+              {[
+                "Rolling machines (up to 3000 mm width, 25 mm thickness).",
+                "Welding Rotators (up to 10 tonnes).",
+                "Hydraulic testing machines (up to 40 Kg/cm²).",
+                "Dish end forming and heat treatment facilities.",
+                "MIG, TIG (Argon), and advanced welding machines.",
+                "In-house machining, grinding, and finishing facilities.",
+                "Third-party certified sand blasting and painting shop."
+              ].map((highlight, idx) => (
+                <Reveal key={idx} delay={idx * 0.05} className="flex items-start gap-4">
+                  <div className="mt-2 h-2 w-2 shrink-0 rounded-full bg-[#C9A14A]" />
+                  <p className="text-lg text-[#5E5E5E]">{highlight}</p>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+          <Reveal className="mt-12 text-center">
+            <p className="text-lg italic text-[#1F1F1F]">
+              "This robust setup allows us to produce precision-engineered equipment, ensuring timely delivery with international quality standards."
+            </p>
+          </Reveal>
+        </div>
+      </section>
 
-function Infrastructure() {
-  return <><PageHero kicker="Facility" title="Advanced Manufacturing Hub." text="A 40,000 sq ft high-tech manufacturing ecosystem equipped with heavy machinery for precision fabrication." photo={img.shed} /><SpecList title="Capabilities" items={infrastructure} photo={img.weld} /><section className="px-6 py-32 md:px-10"><div className="mx-auto grid max-w-[1400px] gap-6 lg:grid-cols-3">{[img.weld, img.gauge, img.steel].map((photo, i) => <Reveal key={photo} delay={i * 0.1} className="group relative h-[450px] overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]"><img src={photo} alt="Hardware" className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/80 to-transparent opacity-80" /><p className="absolute bottom-8 left-8 text-xs font-semibold  tracking-wide text-[#E2C675]">Hardware Layer {String(i + 1).padStart(2, "0")}</p></Reveal>)}</div></section></>;
+      <section className="px-6 py-32 md:px-10">
+        <SectionTitle kicker="Equipment Roster" title="Industrial process solutions." />
+        <div className="mx-auto mt-20 grid max-w-[1400px] gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {processProducts.map((product, index) => (
+            <Reveal key={product} delay={(index % 3) * 0.1}>
+              <div className="group relative flex flex-col h-full overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.04)] transition hover:border-[#C9A14A]/40 hover:shadow-[0_20px_50px_rgba(201,161,74,0.1)] hover:-translate-y-1">
+                <div className="relative h-64 overflow-hidden shrink-0">
+                  <img src={[img.gauge, img.tanks, img.process][index % 3]} alt={product} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
+                </div>
+                <div className="flex flex-col flex-1 p-8">
+                  <Kicker>Model {String(index + 1).padStart(2, "0")}</Kicker>
+                  <h2 className="mt-4 text-2xl font-medium text-[#1F1F1F]">{product}</h2>
+                  <p className="mt-4 text-sm leading-relaxed text-[#5E5E5E]">Manufactured with stringent welding controls, x-ray testing, and precise dimensional tolerances to handle high-pressure and corrosive fluid dynamics.</p>
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    </>
+  );
 }
 
 function Projects() {
@@ -499,14 +756,104 @@ function Projects() {
   return <><PageHero kicker="Projects" title="Deployed Architecture." text="Examine our portfolio of high-stress structures and critical process equipment deployed globally." photo={img.steel} /><section className="px-6 py-32 md:px-10"><div className="mx-auto max-w-[1400px]"><div className="flex flex-wrap justify-center gap-3">{filters.map((item) => <button key={item} onClick={() => setFilter(item)} className={`rounded-full px-6 py-2.5 text-xs font-semibold  tracking-wide transition-all ${filter === item ? "bg-[#C9A14A] text-white shadow-[0_10px_20px_rgba(201,161,74,0.3)]" : "border border-[#C9A14A]/20 bg-white text-[#5E5E5E] hover:text-[#1F1F1F] hover:border-[#C9A14A]/40"}`}>{item}</button>)}</div><div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{[img.peb, img.shed, img.steel, img.process, img.tanks, img.gauge].map((photo, index) => <Reveal key={`${filter}-${photo}`} delay={index * 0.05}><motion.div whileHover={{ y: -5 }} className="group relative h-[400px] overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]"><img src={photo} alt={filter} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" /><div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/90 via-[#1F1F1F]/30 to-transparent" /><div className="absolute bottom-0 p-8"><p className="text-[10px] font-semibold  tracking-wide text-[#E2C675]">{filter}</p><p className="mt-2 text-2xl font-medium text-white transition-transform group-hover:translate-x-2">Case 0{index + 1}</p></div></motion.div></Reveal>)}</div></div></section></>;
 }
 
-function Industries() {
-  return <><PageHero kicker="Sectors" title="Industrial Integrations." text="Delivering specialized infrastructure for sectors where operational reliability is mission-critical." photo={img.tanks} /><IconGrid /><IconGrid items={customers} kicker="Client Types" title="Engineering partners." /></>;
-}
-
 function WhyPage() {
-  return <><PageHero kicker="Why Us" title="The execution protocol." text="A rigorous, controlled workflow ensuring precise translation from engineering requirement to structural reality." photo={img.hero} /><Timeline items={workflow} kicker="Protocol" title="Lifecycle Management." /><section className="border-t border-[#C9A14A]/10" /><Timeline items={why} kicker="Advantages" title="System Benefits." /></>;
-}
+  const advantages = [
+    { title: "Single Window Solution", text: "From conceptual design and engineering to manufacturing and final erection, we provide an integrated, end-to-end service.", icon: Layers },
+    { title: "Fast Delivery & Erection", text: "Optimized pre-fabrication in our controlled facility guarantees rapid on-site assembly and drastically reduced project timelines.", icon: Zap },
+    { title: "Advanced Manufacturing Facility", text: "Our 40,000 sq ft plant is equipped with automated CNC machinery, ensuring unparalleled precision and scale.", icon: Building2 },
+    { title: "High Quality Material", text: "We source only premium-grade steel and raw materials, undergoing stringent quality checks before entering the production line.", icon: ShieldCheck },
+    { title: "Future Expansion Capability", text: "Our engineered structures are designed with modularity in mind, allowing for seamless horizontal or vertical expansion.", icon: Maximize },
+    { title: "Customer Support Excellence", text: "Dedicated project managers provide transparent communication and ongoing support from initialization to post-completion.", icon: Headphones }
+  ];
 
+  return (
+    <>
+      <PageHero kicker="Why Us" title="The Swastik Advantage." text="A rigorous, controlled workflow ensuring precise translation from engineering requirement to structural reality." photo={img.hero} />
+      
+      <section className="bg-white px-6 py-32 md:px-10">
+        <div className="mx-auto max-w-[1400px]">
+          <Reveal className="text-center max-w-3xl mx-auto">
+            <Kicker>The Swastik Advantage</Kicker>
+            <h2 className="mt-4 text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl">Engineered for absolute reliability.</h2>
+            <p className="mt-6 text-lg text-[#5E5E5E]">
+              We don't just build structures; we architect scalable, high-performance industrial ecosystems designed to outlast and outperform.
+            </p>
+          </Reveal>
+
+          <div className="mt-24 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {advantages.map((adv, i) => (
+              <Reveal key={adv.title} delay={i * 0.1} className="group relative overflow-hidden rounded-3xl bg-[#FAF8F3] p-10 border border-[#C9A14A]/10 transition hover:border-[#C9A14A]/30 hover:shadow-[0_20px_50px_rgba(201,161,74,0.08)]">
+                <div className="absolute right-0 top-0 h-32 w-32 -translate-y-16 translate-x-16 rounded-full bg-[#C9A14A]/10 blur-3xl transition duration-500 group-hover:bg-[#C9A14A]/20" />
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm border border-[#C9A14A]/10 text-[#C9A14A] transition-transform duration-500 group-hover:scale-110 group-hover:bg-[#C9A14A] group-hover:text-white">
+                  <adv.icon className="h-6 w-6" />
+                </div>
+                <h3 className="mt-8 text-2xl font-medium text-[#1F1F1F]">{adv.title}</h3>
+                <p className="mt-4 text-base leading-relaxed text-[#5E5E5E]">
+                  {adv.text}
+                </p>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-[#1F1F1F] px-6 py-32 md:px-10">
+        <div className="absolute inset-0 opacity-20">
+          <img src={img.weld} alt="Background" className="h-full w-full object-cover grayscale mix-blend-overlay" />
+        </div>
+        <div className="relative z-10 mx-auto max-w-[1400px]">
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+            <Reveal>
+              <Kicker>Execution Model</Kicker>
+              <h2 className="mt-4 text-4xl font-medium tracking-tight text-white md:text-5xl lg:text-6xl">
+                Precision at every phase.
+              </h2>
+              <p className="mt-6 text-lg text-white/60">
+                From the initial requirement gathering to the final handover, our workflow is a tightly controlled, highly transparent process designed to eliminate risks and guarantee on-time delivery.
+              </p>
+              <div className="mt-10 grid gap-6 sm:grid-cols-2">
+                {[
+                  ["Design Approval", "Advanced CAD & structural modeling for perfect accuracy."],
+                  ["Automated Fabrication", "CNC-driven manufacturing for zero-tolerance precision."],
+                  ["Stringent QC", "Multi-stage inspections ensuring global compliance."],
+                  ["Rapid Erection", "Standardized components for fast, safe assembly."]
+                ].map(([title, desc]) => (
+                  <div key={title} className="flex gap-4">
+                    <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#C9A14A]/20 text-[#C9A14A]">
+                      <div className="h-2 w-2 rounded-full bg-[#C9A14A]" />
+                    </div>
+                    <div>
+                      <h4 className="font-medium text-white">{title}</h4>
+                      <p className="mt-1 text-sm text-white/50">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.2} className="relative hidden lg:block">
+              <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
+                <img src={img.steel} alt="Execution" className="rounded-2xl object-cover h-[500px] w-full" />
+                <div className="absolute inset-0 rounded-3xl ring-1 ring-inset ring-white/10" />
+              </div>
+              
+              <div className="absolute -left-8 -bottom-8 rounded-2xl border border-white/10 bg-[#1F1F1F] p-6 shadow-2xl backdrop-blur-xl">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#C9A14A]/20 text-[#C9A14A]">
+                    <ShieldCheck className="h-6 w-6" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-white">100% Quality Assurance</p>
+                    <p className="text-xs text-white/50">Zero-compromise standards</p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 function Info({ icon: Icon, title, text }: { icon: LucideIcon; title: string; text: string }) {
   return <div className="flex gap-4 rounded-2xl border border-[#C9A14A]/15 bg-white p-6 shadow-sm hover:border-[#C9A14A]/30 transition"><div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#C9A14A]/10 text-[#C9A14A]"><Icon className="h-5 w-5" /></div><div><p className="text-[10px]  tracking-[0.2em] text-[#5E5E5E]">{title}</p><p className="mt-1 text-lg text-[#1F1F1F]">{text}</p></div></div>;
 }
@@ -533,9 +880,7 @@ export default function App() {
     about: <About />,
     peb: <PEB />,
     process: <Process />,
-    infrastructure: <Infrastructure />,
     projects: <Projects />,
-    industries: <Industries />,
     why: <WhyPage />,
     contact: <Contact />,
   }), []);
