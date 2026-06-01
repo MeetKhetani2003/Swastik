@@ -1,18 +1,36 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Trash2 } from "lucide-react";
 
 export default function InquiriesPage() {
   const [inquiries, setInquiries] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchInquiries = () => {
+    setLoading(true);
     fetch("/api/inquiries")
       .then(res => res.json())
       .then(data => {
         if (data.success) setInquiries(data.inquiries);
       })
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchInquiries();
   }, []);
+
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this inquiry?")) return;
+    try {
+      const res = await fetch(`/api/inquiries/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        fetchInquiries();
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div>
@@ -28,6 +46,7 @@ export default function InquiriesPage() {
                 <th className="px-6 py-4">Name / Company</th>
                 <th className="px-6 py-4">Contact</th>
                 <th className="px-6 py-4">Requirements</th>
+                <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#C9A14A]/10">
@@ -48,6 +67,15 @@ export default function InquiriesPage() {
                   </td>
                   <td className="px-6 py-4 max-w-xs truncate" title={inq.requirements}>
                     {inq.requirements || "-"}
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <button 
+                      onClick={() => handleDelete(inq._id)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
+                      title="Delete Inquiry"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </td>
                 </tr>
               ))}

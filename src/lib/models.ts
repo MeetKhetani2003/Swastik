@@ -20,20 +20,35 @@ const InquirySchema: Schema = new Schema({
 
 export const Inquiry = mongoose.models.Inquiry || mongoose.model<IInquiry>('Inquiry', InquirySchema);
 
+export interface ICategory extends Document {
+  name: string;
+  gridFsId: mongoose.Types.ObjectId;
+  createdAt: Date;
+}
+
+const CategorySchema: Schema = new Schema({
+  name: { type: String, required: true, unique: true },
+  gridFsId: { type: Schema.Types.ObjectId, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
 export interface IPhoto extends Document {
   category: string;
+  name?: string;
   gridFsId: mongoose.Types.ObjectId;
   createdAt: Date;
 }
 
 const PhotoSchema: Schema = new Schema({
-  category: { 
-    type: String, 
-    required: true,
-    enum: ['PEB and heavy', 'Our Infra', 'Process eq']
-  },
+  category: { type: String, required: true },
+  name: { type: String, default: "" },
   gridFsId: { type: Schema.Types.ObjectId, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 
+if (process.env.NODE_ENV !== 'production') {
+  delete mongoose.models.Category;
+  delete mongoose.models.Photo;
+}
+export const Category = mongoose.models.Category || mongoose.model<ICategory>('Category', CategorySchema);
 export const Photo = mongoose.models.Photo || mongoose.model<IPhoto>('Photo', PhotoSchema);

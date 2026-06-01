@@ -7,9 +7,22 @@ export default function GalleryManager() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [category, setCategory] = useState("PEB and heavy");
+  const [category, setCategory] = useState("");
+  const [name, setName] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [categoriesList, setCategoriesList] = useState<any[]>([]);
 
-  const categories = ["PEB and heavy", "Our Infra", "Process eq"];
+  const fetchCategories = () => {
+    fetch("/api/categories")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.categories.length > 0) {
+          setCategoriesList(data.categories);
+          setCategory(data.categories[0].name);
+        }
+      });
+  };
 
   const fetchPhotos = () => {
     setLoading(true);
@@ -22,6 +35,7 @@ export default function GalleryManager() {
   };
 
   useEffect(() => {
+    fetchCategories();
     fetchPhotos();
   }, []);
 
@@ -33,6 +47,7 @@ export default function GalleryManager() {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("category", category);
+    if (name) formData.append("name", name);
 
     try {
       const res = await fetch("/api/upload", {
@@ -41,6 +56,7 @@ export default function GalleryManager() {
       });
       if (res.ok) {
         setFile(null);
+        setName("");
         fetchPhotos();
       }
     } catch (e) {
@@ -79,6 +95,16 @@ export default function GalleryManager() {
               className="w-full text-sm text-[#5E5E5E] file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-[#FAF8F3] file:text-[#1F1F1F] hover:file:bg-[#C9A14A]/10"
             />
           </label>
+          <label className="w-full md:w-48">
+            <span className="block text-xs font-semibold text-[#5E5E5E] mb-2 uppercase tracking-wide">Photo Name</span>
+            <input 
+              type="text" 
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Optional name..."
+              className="w-full rounded-xl border border-[#C9A14A]/15 bg-[#FAF8F3] px-4 py-3 outline-none text-sm"
+            />
+          </label>
           <label className="w-full md:w-64">
             <span className="block text-xs font-semibold text-[#5E5E5E] mb-2 uppercase tracking-wide">Category</span>
             <select 
@@ -86,7 +112,8 @@ export default function GalleryManager() {
               onChange={(e) => setCategory(e.target.value)}
               className="w-full rounded-xl border border-[#C9A14A]/15 bg-[#FAF8F3] px-4 py-3 outline-none"
             >
-              {categories.map(c => <option key={c} value={c}>{c}</option>)}
+              {categoriesList.map(c => <option key={c._id} value={c.name}>{c.name}</option>)}
+              {categoriesList.length === 0 && <option value="">No categories available</option>}
             </select>
           </label>
           <button 
@@ -106,17 +133,57 @@ export default function GalleryManager() {
         ) : (
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
             {photos.map(photo => (
-              <div key={photo._id} className="group relative bg-white rounded-2xl overflow-hidden border border-[#C9A14A]/10 shadow-sm">
-                <img src={`/api/image/${photo.gridFsId}`} alt="Gallery item" className="w-full h-48 object-cover" />
-                <div className="p-4 flex justify-between items-center bg-white border-t border-[#C9A14A]/10">
-                  <span className="text-xs font-semibold uppercase tracking-wide text-[#5E5E5E]">{photo.category}</span>
-                  <button 
-                    onClick={() => handleDelete(photo._id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition"
-                    title="Delete"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </button>
+              <div key={photo._id} className="group relative bg-white rounded-2xl overflow-hidden border border-[#C9A14A]/10 shadow-sm flex flex-col">
+                <img src={`/api/image/${photo.gridFsId}`} alt={photo.name || "Gallery item"} className="w-full h-48 object-cover" />
+                <div className="p-4 flex-1 flex flex-col justify-between bg-white border-t border-[#C9A14A]/10 gap-2">
+                  <div className="flex justify-between items-start gap-2">
+                    {editingId === photo._id ? (
+                      <input 
+                        type="text"
+                        value={editName}
+                        onChange={e => setEditName(e.target.value)}
+                        className="w-full text-sm border-b border-[#C9A14A] outline-none"
+                        autoFocus
+                      />
+                    ) : (
+                      <span className="text-sm font-medium text-[#1F1F1F] leading-tight">{photo.name || "Untitled"}</span>
+                    )}
+                    <span className="text-[10px] font-semibold uppercase tracking-wide text-[#C9A14A] bg-[#C9A14A]/10 px-2 py-1 rounded whitespace-nowrap">{photo.category}</span>
+                  </div>
+                  <div className="flex justify-end gap-2 mt-2">
+                    {editingId === photo._id ? (
+                      <>
+                        <button 
+                          onClick={async () => {
+                            try {
+                              const res = await fetch(`/api/photos/${photo._id}`, {
+                                method: 'PUT',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ name: editName })
+                              });
+                              if (res.ok) {
+                                setEditingId(null);
+                                fetchPhotos();
+                              }
+                            } catch(e) { console.error(e) }
+                          }}
+                          className="text-xs font-semibold text-green-600 hover:text-green-700"
+                        >Save</button>
+                        <button onClick={() => setEditingId(null)} className="text-xs font-semibold text-gray-500 hover:text-gray-700">Cancel</button>
+                      </>
+                    ) : (
+                      <>
+                        <button 
+                          onClick={() => { setEditingId(photo._id); setEditName(photo.name || ""); }}
+                          className="text-xs font-semibold text-[#5E5E5E] hover:text-[#1F1F1F]"
+                        >Edit</button>
+                        <button 
+                          onClick={() => handleDelete(photo._id)}
+                          className="text-xs font-semibold text-red-500 hover:text-red-700"
+                        >Delete</button>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             ))}

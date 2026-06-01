@@ -1,7 +1,8 @@
 "use client";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   ArrowRight,
   Building2,
@@ -527,20 +528,29 @@ export function ProjectWorkflow() {
 
 export function ProjectsPreview() {
   const router = useRouter();
-  const projects = [["PEB and Heavy Structure", img.peb], ["Our Infrastructure", img.shed], ["Process Equipments", img.process]];
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) setCategories(data.categories);
+      });
+  }, []);
+
   return (
     <section className="px-6 py-32 md:px-10">
       <SectionTitle kicker="Deployments" title="Proven structural execution." />
       <div className="mx-auto mt-20 grid max-w-[1400px] gap-4 md:grid-cols-3">
-        {projects.map(([name, photo], index) => (
-          <Reveal key={name} delay={index * 0.1}>
-            <motion.button onClick={() => router.push(`/projects?category=${encodeURIComponent(name)}`)} className="group relative h-[400px] w-full overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]">
-              <img src={photo} alt={name} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
+        {categories.map((cat, index) => (
+          <Reveal key={cat.name} delay={index * 0.1}>
+            <motion.button onClick={() => router.push(`/projects?category=${encodeURIComponent(cat.name)}`)} className="group relative h-[400px] w-full overflow-hidden rounded-3xl border border-[#C9A14A]/15 bg-white shadow-[0_15px_40px_rgba(31,31,31,0.06)]">
+              <img src={`/api/image/${cat.gridFsId}`} alt={cat.name} className="h-full w-full object-cover opacity-90 transition duration-700 group-hover:scale-105 group-hover:opacity-100" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/90 via-[#1F1F1F]/40 to-transparent" />
               <div className="absolute inset-0 border-2 border-[#C9A14A]/0 transition duration-500 group-hover:border-[#C9A14A]/30 rounded-3xl" />
               <div className="absolute bottom-0 left-0 p-8 text-left">
                 <p className="text-[10px] font-semibold  tracking-wide text-[#E2C675]">Gallery Category</p>
-                <p className="mt-2 text-2xl font-medium text-white transition-transform group-hover:translate-x-2">{name}</p>
+                <p className="mt-2 text-2xl font-medium text-white transition-transform group-hover:translate-x-2">{cat.name}</p>
               </div>
             </motion.button>
           </Reveal>
@@ -900,10 +910,20 @@ export function Process() {
 }
 
 export function Projects({ initialCategory = "ALL" }: { initialCategory?: string }) {
-  const filters = ["ALL", "PEB and heavy", "Our Infra", "Process eq"];
+  const [filters, setFilters] = useState(["ALL"]);
   const [filter, setFilter] = useState(initialCategory);
   const [photos, setPhotos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/categories")
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setFilters(["ALL", ...data.categories.map((c: any) => c.name)]);
+        }
+      });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -944,7 +964,7 @@ export function Projects({ initialCategory = "ALL" }: { initialCategory?: string
                     <div className="absolute inset-0 bg-gradient-to-t from-[#1F1F1F]/90 via-[#1F1F1F]/30 to-transparent" />
                     <div className="absolute bottom-0 p-8">
                       <p className="text-[10px] font-semibold tracking-wide text-[#E2C675] uppercase">{photo.category}</p>
-                      <p className="mt-2 text-xl font-medium text-white transition-transform group-hover:translate-x-2">Image {index + 1}</p>
+                      <p className="mt-2 text-xl font-medium text-white transition-transform group-hover:translate-x-2">{photo.name || "Untitled"}</p>
                     </div>
                   </motion.div>
                 </Reveal>
@@ -1064,19 +1084,25 @@ export function Info({ icon: Icon, title, text }: { icon: LucideIcon; title: str
 export function Contact() {
   const [formData, setFormData] = useState({ name: '', company: '', email: '', phone: '', requirements: '' });
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!captchaToken) {
+      alert("Please complete the reCAPTCHA verification.");
+      return;
+    }
     setStatus("loading");
     try {
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({ ...formData, captchaToken })
       });
       if (res.ok) {
         setStatus("success");
         setFormData({ name: '', company: '', email: '', phone: '', requirements: '' });
+        setCaptchaToken(null);
       } else {
         setStatus("error");
       }
@@ -1113,6 +1139,13 @@ export function Contact() {
                 <span className="mb-2 block text-xs font-semibold tracking-wide text-[#5E5E5E]">Requirement Data</span>
                 <textarea rows={5} value={formData.requirements} onChange={e => setFormData(p => ({...p, requirements: e.target.value}))} className="w-full rounded-xl border border-[#C9A14A]/15 bg-[#FAF8F3] px-4 py-4 text-[#1F1F1F] outline-none transition focus:border-[#C9A14A] focus:bg-white" placeholder="Specify dimensions, capacity, or general scope..." />
               </label>
+              
+              <div className="flex justify-center my-2">
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ""}
+                  onChange={setCaptchaToken}
+                />
+              </div>
               {status === "success" && <p className="text-green-600 font-medium">Inquiry transmitted successfully!</p>}
               {status === "error" && <p className="text-red-600 font-medium">Transmission failed.</p>}
               <Button disabled={status === "loading"}>{status === "loading" ? "Transmitting..." : "Transmit Data"}</Button>

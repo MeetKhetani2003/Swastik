@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, MessageSquare, Image as ImageIcon } from 'lucide-react';
+import { LayoutDashboard, MessageSquare, Image as ImageIcon, Layers } from 'lucide-react';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -16,6 +16,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </Link>
           <Link href="/admin/inquiries" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition text-sm font-medium">
             <MessageSquare className="h-5 w-5 text-[#C9A14A]" /> Inquiries
+          </Link>
+          <Link href="/admin/categories" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition text-sm font-medium">
+            <Layers className="h-5 w-5 text-[#C9A14A]" /> Categories
           </Link>
           <Link href="/admin/gallery" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-white/5 transition text-sm font-medium">
             <ImageIcon className="h-5 w-5 text-[#C9A14A]" /> Gallery Manager

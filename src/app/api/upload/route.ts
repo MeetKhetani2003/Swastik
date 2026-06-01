@@ -7,6 +7,7 @@ export async function POST(request: Request) {
     const formData = await request.formData();
     const file = formData.get('file') as File;
     const category = formData.get('category') as string;
+    const name = formData.get('name') as string || '';
 
     if (!file || !category) {
       return NextResponse.json({ success: false, error: "Missing file or category" }, { status: 400 });
@@ -27,6 +28,7 @@ export async function POST(request: Request) {
         try {
           const photo = await Photo.create({
             category,
+            name,
             gridFsId: uploadStream.id
           });
           resolve(NextResponse.json({ success: true, photo }));
