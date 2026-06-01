@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getGridFSBucket } from '@/lib/db';
 import mongoose from 'mongoose';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     const bucket = await getGridFSBucket();

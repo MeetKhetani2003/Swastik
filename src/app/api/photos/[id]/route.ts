@@ -3,7 +3,7 @@ import { connectDB, getGridFSBucket } from '@/lib/db';
 import { Photo } from '@/lib/models';
 import mongoose from 'mongoose';
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
     await connectDB();
