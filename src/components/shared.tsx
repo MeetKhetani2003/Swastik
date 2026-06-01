@@ -175,10 +175,10 @@ export function Kicker({ children }: { children: React.ReactNode }) {
   return <p className="text-[11px] font-semibold  tracking-wide text-[#C9A14A]">{children}</p>;
 }
 
-export function Button({ children, page, variant = "gold" }: { children: React.ReactNode; page?: Page; variant?: "gold" | "outline" }) {
+export function Button({ children, page, variant = "gold", disabled }: { children: React.ReactNode; page?: Page; variant?: "gold" | "outline"; disabled?: boolean }) {
   const router = useRouter();
   return (
-    <motion.button onClick={() => page && router.push(page === "home" ? "/" : `/${page}`)} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className={`group relative overflow-hidden rounded-full px-7 py-4 text-xs font-semibold  tracking-wide transition-all ${variant === "gold" ? "bg-[#C9A14A] text-white shadow-[0_15px_30px_rgba(201,161,74,0.3)] hover:shadow-[0_20px_40px_rgba(201,161,74,0.4)]" : "border border-[#C9A14A]/30 bg-white/80 text-[#1F1F1F] backdrop-blur-xl hover:border-[#C9A14A]/60 hover:bg-[#C9A14A]/5"}`}>
+    <motion.button disabled={disabled} onClick={() => page && router.push(page === "home" ? "/" : `/${page}`)} whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }} className={`group relative overflow-hidden rounded-full px-7 py-4 text-xs font-semibold  tracking-wide transition-all disabled:opacity-50 disabled:cursor-not-allowed ${variant === "gold" ? "bg-[#C9A14A] text-white shadow-[0_15px_30px_rgba(201,161,74,0.3)] hover:shadow-[0_20px_40px_rgba(201,161,74,0.4)]" : "border border-[#C9A14A]/30 bg-white/80 text-[#1F1F1F] backdrop-blur-xl hover:border-[#C9A14A]/60 hover:bg-[#C9A14A]/5"}`}>
       <span className="relative z-10 flex items-center justify-center gap-3">{children}<ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></span>
       <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
     </motion.button>
@@ -259,7 +259,7 @@ export function HomeHero() {
             Precision.<br /><span className="text-[#C9A14A]">Engineered.</span>
           </h1>
           <p className="mt-8 max-w-xl text-xl font-light leading-relaxed text-white/90 drop-shadow-lg">Advanced steel structures and intelligent process equipment manufacturing for modern industrial sectors.</p>
-          <div className="mt-12 flex flex-col gap-4 sm:flex-row"><Button page="peb"> PEB and Heavy structure</Button><Button page="process" variant="gold">View Industrial and Pharmasutical Equipment</Button></div>
+          <div className="mt-12 flex flex-col gap-4 sm:flex-row"><Button page="peb">View PEB and Heavy structure</Button><Button page="process" variant="gold">View Industrial and Pharmasutical Equipment</Button></div>
           
           <div className="mt-16 flex gap-3">
             {carouselImages.map((_, idx) => (
@@ -333,7 +333,7 @@ export function Divisions() {
       features: ["Pre-Engineered Buildings", "Heavy Steel Structures", "Industrial Hubs", "Warehouses & Factories"]
     },
     {
-      title: "Process Equipment",
+      title: "Industrial and Pharmaceutical Equipment",
       description: "Precision-built process vessels, reactors, and thermal equipment for chemical, pharmaceutical, petrochemical, and manufacturing plants.",
       photo: img.process,
       page: "process",
@@ -527,7 +527,7 @@ export function ProjectWorkflow() {
 
 export function ProjectsPreview() {
   const router = useRouter();
-  const projects = [["PEB and heavy", img.peb], ["Our Infra", img.shed], ["Process eq", img.process]];
+  const projects = [["PEB and Heavy Structure", img.peb], ["Our Infrastructure", img.shed], ["Process Equipments", img.process]];
   return (
     <section className="px-6 py-32 md:px-10">
       <SectionTitle kicker="Deployments" title="Proven structural execution." />
@@ -792,7 +792,7 @@ export function Process() {
         <div className="mx-auto max-w-[1200px] flex flex-col md:flex-row gap-12 items-center">
           <Reveal className="flex-1">
             <Kicker>About Us</Kicker>
-            <h2 className="mt-4 text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl uppercase">About Us</h2>
+            <h2 className="mt-4 text-4xl font-medium tracking-tight text-[#1F1F1F] md:text-5xl uppercase">About Our Process Equipments</h2>
             <div className="mt-6 flex"><GoldLine /></div>
             <p className="mt-8 text-xl leading-relaxed text-[#5E5E5E]">
               We are leading manufacturer of tanks, vessels, and process equipment serving diverse industrial needs. Established with a vision to provide world-class fabrication solutions, we have built a strong reputation for delivering equipment that meets the highest standards of safety, efficiency, and durability.

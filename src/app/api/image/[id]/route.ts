@@ -32,7 +32,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
 
     return new NextResponse(webStream, {
       headers: {
-        'Content-Type': file.contentType || 'image/jpeg',
+        'Content-Type': (file as any).contentType || 'image/jpeg',
         'Cache-Control': 'public, max-age=31536000, immutable',
       },
     });

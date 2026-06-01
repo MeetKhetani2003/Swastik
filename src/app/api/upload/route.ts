@@ -18,11 +18,11 @@ export async function POST(request: Request) {
 
     const uploadStream = bucket.openUploadStream(file.name, {
       contentType: file.type
-    });
+    } as any);
 
     uploadStream.end(buffer);
 
-    return new Promise((resolve) => {
+    return new Promise<Response>((resolve) => {
       uploadStream.on('finish', async () => {
         try {
           const photo = await Photo.create({
