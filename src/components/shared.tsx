@@ -1167,6 +1167,93 @@ export function Contact() {
 
 export function Footer() {
   const router = useRouter();
-  return <footer className="border-t border-[#C9A14A]/15 bg-[#1F1F1F] px-6 py-20 text-white/60 md:px-10"><div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]"><div><Logo /><p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">High-performance engineering and fabrication. Delivering PEB structures and critical process equipment through precision manufacturing.</p><div className="mt-8 flex gap-4"><a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#C9A14A] hover:text-white"><Globe2 className="h-4 w-4" /></a><a href="#" className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#C9A14A] hover:text-white"><Mail className="h-4 w-4" /></a></div></div><div><p className="text-sm font-semibold text-white">Index</p><div className="mt-6 grid gap-3">{nav.slice(0, 6).map((item) => <button key={item.page} onClick={() => router.push(item.page === "home" ? "/" : `/${item.page}`)} className="w-fit text-sm transition hover:text-[#E2C675]">{item.label}</button>)}</div></div><div><p className="text-sm font-semibold text-white">Modules</p><div className="mt-6 grid gap-3">{divisions.slice(0, 5).map(([name]) => <p key={name} className="text-sm cursor-default hover:text-white/80 transition">{name}</p>)}</div></div><div><p className="text-sm font-semibold text-white">Comm Node</p><p className="mt-6 text-sm">1601/1 GIDC<br />Ankleshwar - 393002</p><p className="mt-4 text-sm text-[#E2C675]">9104567596</p><p className="mt-2 text-sm text-[#E2C675]">Swastikind1601@gmail.com</p></div></div><div className="mx-auto mt-20 flex max-w-[1400px] flex-col justify-between gap-4 border-t border-white/10 pt-8 text-[10px] font-semibold  tracking-wide text-white/40 md:flex-row"><p>SWASTIK ENGINEERING © {new Date().getFullYear()}</p><p>System Architecture Active</p></div></footer>;
+  const footerNav = [
+    { page: "home", label: "Home" },
+    { page: "about", label: "About" },
+    { page: "contact", label: "Contact" },
+    { page: "projects", label: "Projects" },
+    { page: "why", label: "Why Swastik" },
+  ] as const;
+
+  return (
+    <footer className="border-t border-[#C9A14A]/15 bg-[#1F1F1F] px-6 py-20 text-white/60 md:px-10">
+      <div className="mx-auto grid max-w-[1400px] gap-12 lg:grid-cols-[1.5fr_1fr_1fr_1fr]">
+        <div>
+          <Logo />
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/60">
+            High-performance engineering and fabrication. Delivering PEB structures and critical process equipment through precision manufacturing.
+          </p>
+          <div className="mt-8 flex gap-4">
+            <a
+              href="#"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#C9A14A] hover:text-white"
+            >
+              <Globe2 className="h-4 w-4" />
+            </a>
+            <a
+              href="mailto:Swastikind1601@gmail.com"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 transition hover:bg-[#C9A14A] hover:text-white"
+            >
+              <Mail className="h-4 w-4" />
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-semibold text-white">Index</p>
+          <div className="mt-6 grid gap-3">
+            {footerNav.map((item) => (
+              <button
+                key={item.page}
+                onClick={() => router.push(item.page === "home" ? "/" : `/${item.page}`)}
+                className="w-fit text-sm transition hover:text-[#E2C675] text-left"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-semibold text-white">Modules</p>
+          <div className="mt-6 grid gap-3">
+            <button
+              onClick={() => router.push("/peb")}
+              className="w-fit text-sm transition hover:text-[#E2C675] text-left"
+            >
+              PEB & Heavy Structure
+            </button>
+            <button
+              onClick={() => router.push("/process")}
+              className="w-fit text-sm transition hover:text-[#E2C675] text-left"
+            >
+              Industrial and Pharmaceutical Equipment
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-semibold text-white">Contact Info</p>
+          <p className="mt-6 text-sm">
+            1601/1 GIDC
+            <br />
+            Ankleshwar - 393002
+          </p>
+          <p className="mt-4 text-sm text-[#E2C675]">
+            <a href="tel:+919104567596" className="hover:underline">+91 9104567596</a> /{" "}
+            <a href="tel:+919157646407" className="hover:underline">+91 91576 46407</a>
+          </p>
+          <p className="mt-2 text-sm text-[#E2C675]">
+            <a href="mailto:Swastikind1601@gmail.com" className="hover:underline">Swastikind1601@gmail.com</a>
+          </p>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-20 flex max-w-[1400px] flex-col justify-between gap-4 border-t border-white/10 pt-8 text-[10px] font-semibold tracking-wide text-white/40 md:flex-row">
+        <p>SWASTIK ENGINEERING © {new Date().getFullYear()}</p>
+        <p>System Architecture Active</p>
+      </div>
+    </footer>
+  );
 }
 
