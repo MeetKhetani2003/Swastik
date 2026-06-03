@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://swastikengineering.co.in';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.swastik-engineering.com';
   
   const routes = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 1.0 },

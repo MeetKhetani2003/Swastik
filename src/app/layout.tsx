@@ -4,7 +4,7 @@ import { Header, Footer } from "@/components/shared";
 import { PageTransition } from "@/components/PageTransition";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://swastikengineering.co.in'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://www.swastik-engineering.com'),
   title: {
     default: "Swastik Engineering | Precision Steel & Process Equipment",
     template: "%s | Swastik Engineering"
@@ -24,10 +24,13 @@ export const metadata: Metadata = {
     "Steel Fabrication India"
   ],
   authors: [{ name: "Swastik Engineering" }],
+  icons: {
+    icon: "/logo.ico",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://swastikengineering.co.in",
+    url: "https://www.swastik-engineering.com",
     title: "Swastik Engineering | Precision Steel & Process Equipment",
     description: "Advanced pre-engineered steel buildings (PEB), heavy structural steel fabrication, and custom process equipment.",
     siteName: "Swastik Engineering"
